@@ -1,0 +1,9 @@
+*.log
+*.log.*
+*-collector
+.idea
+.DS_Store
+*.env
+*.state
+secrets.yml
+*.json
