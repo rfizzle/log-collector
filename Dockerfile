@@ -5,6 +5,9 @@ ARG GO_VERSION=1.13
 # First stage: Build the binary
 FROM golang:${GO_VERSION}-alpine as golang
 
+# Make empty directory for permission copy
+RUN mkdir /empty
+
 # Set the working directory outside $GOPATH to enable the support for modules.
 WORKDIR /src
 
@@ -66,6 +69,10 @@ COPY --chown=nobody:nobody --from=golang /src/app /app
 
 # Copy temp directory
 COPY --chown=nobody:nobody --from=golang /tmp /tmp
+
+# Copy config directory
+COPY --chown=nobody:nobody --from=golang /empty /etc
+COPY --chown=nobody:nobody --from=golang /empty /etc/collector
 
 # Perform any further action as an unprivileged user.
 USER nobody:nobody
