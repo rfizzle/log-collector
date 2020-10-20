@@ -6,9 +6,11 @@ import (
 	gsuiteClient "github.com/rfizzle/log-collector/clients/gsuite"
 	msGraph "github.com/rfizzle/log-collector/clients/microsoft"
 	oktaClient "github.com/rfizzle/log-collector/clients/okta"
+	"github.com/rfizzle/log-collector/clients/syslog"
 	"github.com/rfizzle/log-collector/collector"
 	flag "github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"net"
 	"os"
 )
 
@@ -27,24 +29,38 @@ func InitClientParams() {
 	flag.String("akamai-client-secret", "", "akamai client secret")
 	flag.String("akamai-access-token", "", "akamai access token")
 	flag.String("akamai-config-id", "", "akamai config id")
+	flag.String("syslog-ip", "", "syslog ip address to listen on")
+	flag.Int("syslog-port", 1514, "syslog port to listen on")
+	flag.String("syslog-protocol", "udp", "syslog protocol to use (tcp, udp, both)")
+	flag.String("syslog-parser", "raw", "syslog parser to use for syslog messages (grok, json, kv, cef, raw)")
+	flag.StringArray("syslog-grok-pattern", []string{}, "syslog grok pattern to parse logs to")
+	flag.Bool("syslog-keep-info", false, "syslog keep original syslog information")
+	flag.Bool("syslog-keep-message", false, "syslog keep the original syslog message")
 }
 
-func InitializeClient() (collector.Client, error) {
+func InitializeClient() (collector.Client, collector.ClientType, error) {
 	options, err := validateClientParams()
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	switch viper.GetString("input") {
 	case "microsoft":
-		return msGraph.New(options)
+		client, err := msGraph.New(options)
+		return client, collector.ClientTypePoll, err
 	case "okta":
-		return oktaClient.New(options)
+		client, err := oktaClient.New(options)
+		return client, collector.ClientTypePoll, err
 	case "gsuite":
-		return gsuiteClient.New(options)
+		client, err := gsuiteClient.New(options)
+		return client, collector.ClientTypePoll, err
 	case "akamai":
-		return akamaiClient.New(options)
+		client, err := akamaiClient.New(options)
+		return client, collector.ClientTypePoll, err
+	case "syslog":
+		client, err := syslog.New(options)
+		return client, collector.ClientTypeStream, err
 	}
-	return nil, nil
+	return nil, 0, nil
 }
 
 func validateClientParams() (map[string]interface{}, error) {
@@ -105,6 +121,32 @@ func validateClientParams() (map[string]interface{}, error) {
 		clientOptions["clientSecret"] = viper.GetString("akamai-client-secret")
 		clientOptions["accessToken"] = viper.GetString("akamai-access-token")
 		clientOptions["configId"] = viper.GetString("akamai-config-id")
+	case "syslog":
+		if !validIPAddress(viper.GetString("syslog-ip")) {
+			return nil, errors.New("invalid ip param (--syslog-ip)")
+		}
+		if viper.GetInt("syslog-port") < 0 || viper.GetInt("port") > 65535 {
+			return nil, errors.New("invalid port param (--syslog-port)")
+		}
+
+		if !contains([]string{"tcp", "udp", "both"}, viper.GetString("syslog-protocol")) {
+			return nil, errors.New("invalid protocol param (--syslog-protocol)")
+		}
+
+		if !contains([]string{"grok", "json", "kv", "cef", "raw"}, viper.GetString("syslog-parser")) {
+			return nil, errors.New("invalid parser param (--syslog-parser)")
+		}
+
+		if viper.GetString("syslog-parser") == "grok" && len(viper.GetStringSlice("syslog-grok-pattern")) == 0 {
+			return nil, errors.New("invalid grok-pattern param (--syslog-grok-pattern)")
+		}
+		clientOptions["ip"] = viper.GetString("syslog-ip")
+		clientOptions["port"] = viper.GetInt("syslog-port")
+		clientOptions["protocol"] = viper.GetString("syslog-protocol")
+		clientOptions["parser"] = viper.GetString("syslog-parser")
+		clientOptions["grok-pattern"] = viper.GetStringSlice("syslog-grok-pattern")
+		clientOptions["keep-info"] = viper.GetBool("syslog-keep-info")
+		clientOptions["keep-message"] = viper.GetBool("syslog-keep-message")
 	}
 
 	return clientOptions, nil
@@ -117,4 +159,21 @@ func fileExists(filename string) bool {
 		return false
 	}
 	return !info.IsDir()
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+func validIPAddress(ip string) bool {
+	if net.ParseIP(ip) == nil {
+		return false
+	} else {
+		return true
+	}
 }

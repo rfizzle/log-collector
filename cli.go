@@ -43,6 +43,10 @@ func setupCliFlags() error {
 }
 
 func checkRequiredParams() error {
+	if viper.GetString("input") == "" {
+		return errors.New("missing input param (--input)")
+	}
+
 	if err := validateState(); err != nil {
 		return err
 	}
@@ -55,10 +59,6 @@ func checkRequiredParams() error {
 }
 
 func validateState() error {
-	if viper.GetString("input") == "" {
-		return errors.New("missing input param (--input)")
-	}
-
 	if viper.GetString("state-path") == "" {
 		return errors.New("missing state file path param (--state-path)")
 	}

@@ -1,6 +1,7 @@
 package microsoft
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -24,7 +25,7 @@ func New(options map[string]interface{}) (*Client, error) {
 }
 
 // Collect will query the source and pass the results back through a result channel
-func (microsoftClient *Client) Collect(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
+func (microsoftClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
 	// Get Current Time
 	currentTimestamp = time.Now()
 
@@ -38,6 +39,10 @@ func (microsoftClient *Client) Collect(timestamp time.Time, resultsChannel chan<
 	currentTimeString := currentTimestamp.Format(time.RFC3339)
 	count, err = microsoftClient.getAlerts(lastTimeString, currentTimeString, resultsChannel)
 	return count, currentTimestamp, err
+}
+
+func (microsoftClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
+	return nil, fmt.Errorf("unsupported client collection method")
 }
 
 func (microsoftClient *Client) Exit() (err error) {

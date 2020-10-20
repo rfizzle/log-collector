@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/rfizzle/log-collector/clients"
 	"github.com/rfizzle/log-collector/collector"
 	"github.com/rfizzle/log-collector/outputs"
@@ -43,7 +44,7 @@ func main() {
 	}
 
 	// Get poll time
-	pollTime := viper.GetInt("schedule")
+	scheduleTime := viper.GetInt("schedule")
 	statePath := viper.GetString("state-path")
 
 	// Setup log writer
@@ -52,11 +53,14 @@ func main() {
 	// Setup the channels for handling async messages
 	chnMessages := make(chan string, maxMessages)
 
+	// Setup context
+	ctx, cancel := context.WithCancel(context.Background())
+
 	// Soft close when CTRL + C is called
-	done := setupCloseHandler()
+	setupCloseHandler(cancel, chnMessages)
 
 	// Setup Client
-	collectorClient, err := clients.InitializeClient()
+	collectorClient, clientType, err := clients.InitializeClient()
 
 	if err != nil {
 		log.Errorf("error creating client: %v", err)
@@ -67,14 +71,14 @@ func main() {
 	log.Infof("starting collector...")
 
 	// Setup input
-	collectorObject, err := collector.New(collectorClient, logger, statePath)
+	collectorObject, err := collector.New(collectorClient, clientType, logger, statePath)
 	if err != nil {
 		log.Errorf("error creating collector interface: %v", err)
 		os.Exit(1)
 	}
 
 	// Start Poll
-	go collectorObject.Poll(pollTime, chnMessages, done)
+	go collectorObject.Start(scheduleTime, chnMessages, ctx)
 
 	// Handle messages
 	go func() {
@@ -102,14 +106,27 @@ func handleMessage(message string, logger *outputs.TmpWriter) {
 
 // SetupCloseHandler creates a 'listener' on a new goroutine which will notify the
 // program if it receives an interrupt from the OS.
-func setupCloseHandler() chan bool {
-	done := make(chan bool)
+func setupCloseHandler(cancelFunc context.CancelFunc, resultsChannel chan<- string) {
 	c := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
+		// Wait for first CTRL+C
 		<-c
-		done <- true
+		// Execute safe cancel function
+		cancelFunc()
+
+		// Wait for additional CTRL+C for force closing
+		for {
+			select {
+			case <-c:
+				log.Warnf("additional CTRL+C received. Force closing application")
+				close(resultsChannel)
+				os.Exit(0)
+				return
+			}
+		}
+
 	}()
 
-	return done
+	return
 }

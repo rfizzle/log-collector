@@ -1,0 +1,11 @@
+name: Pull Request on Release
+on:
+  pull_request:
+    branches: [ release ]
+jobs:
+  validate:
+    name: Validate Source Branch is Master
+    runs-on: ubuntu-latest
+    steps:
+      - name: check if pull source is master branch
+        run: echo ${{ github.head_ref }} | [[ $(</dev/stdin) == "master" ]]

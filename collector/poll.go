@@ -1,18 +1,20 @@
 package collector
 
 import (
+	"context"
 	"github.com/rfizzle/log-collector/outputs"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"time"
 )
 
-func (i *Collector) Poll(pollSeconds int, resultsChannel chan<- string, exitChannel chan bool) {
+func (i *Collector) Poll(pollSeconds int, resultsChannel chan<- string, ctx context.Context) {
 	timer := time.NewTimer(time.Duration(pollSeconds) * time.Second)
+
 	// Infinite loop for polling
 	for {
 		select {
-		case <-exitChannel:
+		case <-ctx.Done():
 			timer.Stop()
 			i.Exit()
 			log.Debugf("closing go routine...")
@@ -30,7 +32,7 @@ func (i *Collector) Poll(pollSeconds int, resultsChannel chan<- string, exitChan
 			log.Infof("querying source...")
 
 			// Get events
-			eventCount, lastPollTime, err := i.client.Collect(lastPollTimestamp, resultsChannel)
+			eventCount, lastPollTime, err := i.client.Poll(lastPollTimestamp, resultsChannel)
 
 			// Handle error
 			if err != nil {

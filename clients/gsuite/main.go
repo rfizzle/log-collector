@@ -21,8 +21,8 @@ func New(options map[string]interface{}) (*Client, error) {
 	}, nil
 }
 
-// Collect will query the source and pass the results back through a result channel
-func (gsuiteClient *Client) Collect(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
+// Poll will query the source and pass the results back through a result channel
+func (gsuiteClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
 	count = 0
 
 	// Get Current Time
@@ -53,6 +53,10 @@ func (gsuiteClient *Client) Collect(timestamp time.Time, resultsChannel chan<- s
 	}
 
 	return count, currentTimestamp, err
+}
+
+func (gsuiteClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
+	return nil, fmt.Errorf("unsupported client collection method")
 }
 
 func (gsuiteClient *Client) Exit() (err error) {

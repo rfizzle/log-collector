@@ -1,6 +1,7 @@
 package akamai
 
 import (
+	"fmt"
 	"github.com/akamai/AkamaiOPEN-edgegrid-golang/edgegrid"
 	"time"
 )
@@ -22,8 +23,8 @@ func New(options map[string]interface{}) (*Client, error) {
 	}, nil
 }
 
-// Collect will query the source and pass the results back through a result channel
-func (akamaiClient *Client) Collect(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
+// Poll will query the source and pass the results back through a result channel
+func (akamaiClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
 	// Get Current Time
 	currentTimestamp = time.Now()
 
@@ -34,6 +35,10 @@ func (akamaiClient *Client) Collect(timestamp time.Time, resultsChannel chan<- s
 	// Convert timestamp
 	count, err = akamaiClient.getLogs(unixTimestamp, currentUnixTimestamp, resultsChannel)
 	return count, currentTimestamp, err
+}
+
+func (akamaiClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
+	return nil, fmt.Errorf("unsupported client collection method")
 }
 
 func (akamaiClient *Client) Exit() (err error) {
