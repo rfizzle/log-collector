@@ -85,7 +85,7 @@ jobs:
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
-      - name: Conventional Changelog Action (Version Only)
+      - name: Conventional Changelog Version
           id: version
           uses: TriPSs/conventional-changelog-action@v3
           with:
