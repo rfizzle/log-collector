@@ -13,7 +13,7 @@ func newState(path string) (p *State, err error) {
 	p = &State{
 		Path: path,
 		Data: data{
-			LastPollTimestamp: time.Now().Add(-1 * time.Hour * 24 * 1).Format(time.RFC3339),
+			LastPollTimestamp: time.Now().Format(time.RFC3339),
 		},
 	}
 	if fileExists(path) {
