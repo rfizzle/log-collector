@@ -86,7 +86,7 @@ jobs:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
       - name: Conventional Changelog Version
-          id: version
+          id: changeversion
           uses: TriPSs/conventional-changelog-action@v3
           with:
             github-token: ${{ secrets.ADMIN_TOKEN }}
@@ -122,7 +122,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_REPO }}
-          tags: latest,${{ steps.version.outputs.tag }}
+          tags: latest,${{ steps.changeversion.outputs.tag }}
       - name: Push changes
         uses: ad-m/github-push-action@master
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
