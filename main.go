@@ -112,6 +112,7 @@ func setupCloseHandler(cancelFunc context.CancelFunc, resultsChannel chan<- stri
 	go func() {
 		// Wait for first CTRL+C
 		<-c
+		log.Infof("gracefully shutting down... Send an additional CTRL+C for a forced shutdown")
 		// Execute safe cancel function
 		cancelFunc()
 
@@ -119,7 +120,7 @@ func setupCloseHandler(cancelFunc context.CancelFunc, resultsChannel chan<- stri
 		for {
 			select {
 			case <-c:
-				log.Warnf("additional CTRL+C received. Force closing application")
+				log.Warnf("additional CTRL+C received. Forced shutdown started...")
 				close(resultsChannel)
 				os.Exit(0)
 				return
