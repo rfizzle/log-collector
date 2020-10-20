@@ -86,15 +86,15 @@ jobs:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
       - name: Conventional Changelog Version
-          id: changeversion
-          uses: TriPSs/conventional-changelog-action@v3
-          with:
-            github-token: ${{ secrets.ADMIN_TOKEN }}
-            skip-commit: 'true'
-            skip-version-file: 'true'
-            skip-on-empty: 'true'
-            output-file: 'false'
-            tag-prefix: ''
+        id: changeversion
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.ADMIN_TOKEN }}
+          skip-commit: 'true'
+          skip-version-file: 'true'
+          skip-on-empty: 'true'
+          output-file: 'false'
+          tag-prefix: ''
       - name: Conventional Changelog Action
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
