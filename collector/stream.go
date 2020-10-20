@@ -11,7 +11,6 @@ import (
 func (i *Collector) Stream(scheduleTime int, resultsChannel chan<- string, ctx context.Context) {
 	count := 0
 	subResultsChannel := make(chan string, 1000)
-	timer := time.NewTimer(time.Duration(scheduleTime) * time.Second)
 
 	// Setup stream with sub results channel
 	cancelFunc, err := i.client.Stream(subResultsChannel)
@@ -20,9 +19,7 @@ func (i *Collector) Stream(scheduleTime int, resultsChannel chan<- string, ctx c
 	if err != nil {
 		log.Errorf("error starting stream: %v", err)
 		cancelFunc()
-		timer.Stop()
 		i.Exit()
-		log.Debugf("closing go routine...")
 		close(resultsChannel)
 		return
 	}
@@ -32,12 +29,10 @@ func (i *Collector) Stream(scheduleTime int, resultsChannel chan<- string, ctx c
 		select {
 		case <-ctx.Done():
 			cancelFunc()
-			timer.Stop()
 			i.Exit()
-			log.Debugf("closing go routine...")
 			close(resultsChannel)
 			return
-		case <-timer.C:
+		case <-time.After(time.Duration(scheduleTime) * time.Second):
 			timestamp := time.Now()
 			if count > 0 {
 				// Rotate temp file
@@ -80,7 +75,6 @@ func (i *Collector) Stream(scheduleTime int, resultsChannel chan<- string, ctx c
 				log.Debugf("no new events to process...")
 			}
 			count = 0
-			timer = time.NewTimer(time.Duration(scheduleTime) * time.Second)
 		case resultString := <-subResultsChannel:
 			count += 1
 			resultsChannel <- resultString
