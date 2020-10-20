@@ -85,16 +85,6 @@ jobs:
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
-      - name: Conventional Changelog Version
-        id: changeversion
-        uses: TriPSs/conventional-changelog-action@v3
-        with:
-          github-token: ${{ secrets.ADMIN_TOKEN }}
-          skip-commit: 'true'
-          skip-version-file: 'true'
-          skip-on-empty: 'true'
-          output-file: 'false'
-          tag-prefix: ''
       - name: Conventional Changelog Action
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
@@ -122,7 +112,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_REPO }}
-          tags: latest,${{ steps.changeversion.outputs.tag }}
+          tags: latest,${{ steps.changelog.outputs.version }}
       - name: Push changes
         uses: ad-m/github-push-action@master
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
