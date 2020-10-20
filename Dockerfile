@@ -72,6 +72,11 @@ COPY --chown=nobody:nobody --from=golang /tmp /tmp
 
 # Copy config directory
 COPY --chown=nobody:nobody --from=golang /empty /etc
+
+# Image cache COPY bugfix
+LABEL maintainer="Coleton Pierson <coleton.pierson@gmail.com>"
+
+# Copy collector config directory
 COPY --chown=nobody:nobody --from=golang /empty /etc/collector
 
 # Perform any further action as an unprivileged user.

@@ -105,14 +105,27 @@ jobs:
           body: ${{ steps.changelog.outputs.clean_changelog }}
           draft: false
           prerelease: false
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v1
+      - name: Set up QEMU
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: ${{ secrets.DOCKER_REPO }}
-          tags: latest,${{ steps.changelog.outputs.version }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_REPO }}:latest,${{ steps.changelog.outputs.version }}
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
       - name: Push changes
         uses: ad-m/github-push-action@master
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
