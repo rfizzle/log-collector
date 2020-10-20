@@ -64,6 +64,9 @@ COPY --from=alpine /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Copy binary
 COPY --chown=nobody:nobody --from=golang /src/app /app
 
+# Copy temp directory
+COPY --chown=nobody:nobody --from=golang /tmp /tmp
+
 # Perform any further action as an unprivileged user.
 USER nobody:nobody
 
