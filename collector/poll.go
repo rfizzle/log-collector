@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func (i *Collector) Poll(pollSeconds int, resultsChannel chan<- string, ctx context.Context) {
+func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- string, ctx context.Context) {
 	// Infinite loop for polling
 	for {
 		select {
@@ -29,7 +29,7 @@ func (i *Collector) Poll(pollSeconds int, resultsChannel chan<- string, ctx cont
 			log.Infof("querying source...")
 
 			// Get events
-			eventCount, lastPollTime, err := i.client.Poll(lastPollTimestamp, resultsChannel)
+			eventCount, lastPollTime, err := i.client.Poll(lastPollTimestamp, resultsChannel, pollOffset)
 
 			// Handle error
 			if err != nil {

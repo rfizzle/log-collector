@@ -22,15 +22,15 @@ func New(options map[string]interface{}) (*Client, error) {
 }
 
 // Poll will query the source and pass the results back through a result channel
-func (gsuiteClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
+func (gsuiteClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error) {
 	count = 0
 
 	// Get Current Time
 	currentTimestamp = time.Now()
 
 	// Convert timestamp
-	lastTimeString := timestamp.Format(time.RFC3339)
-	currentTimeString := currentTimestamp.Format(time.RFC3339)
+	lastTimeString := timestamp.Add(-1 * time.Duration(pollOffset) * time.Second).Format(time.RFC3339)
+	currentTimeString := currentTimestamp.Add(-1 * time.Duration(pollOffset) * time.Second).Format(time.RFC3339)
 
 	// Create a new service client with the built HTTP client
 	srv, err := adminreports.NewService(context.Background(), option.WithHTTPClient(gsuiteClient.httpClient))

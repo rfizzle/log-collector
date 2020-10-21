@@ -45,6 +45,7 @@ func main() {
 
 	// Get poll time
 	scheduleTime := viper.GetInt("schedule")
+	pollOffset := viper.GetInt("poll-offset")
 	statePath := viper.GetString("state-path")
 
 	// Setup log writer
@@ -78,7 +79,7 @@ func main() {
 	}
 
 	// Start Poll
-	go collectorObject.Start(scheduleTime, chnMessages, ctx)
+	go collectorObject.Start(scheduleTime, pollOffset, chnMessages, ctx)
 
 	// Handle messages
 	go func() {

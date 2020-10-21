@@ -24,13 +24,13 @@ func New(options map[string]interface{}) (*Client, error) {
 }
 
 // Poll will query the source and pass the results back through a result channel
-func (akamaiClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
+func (akamaiClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error) {
 	// Get Current Time
 	currentTimestamp = time.Now()
 
 	// Convert unix to int
-	unixTimestamp := int(timestamp.Unix())
-	currentUnixTimestamp := int(currentTimestamp.Unix())
+	unixTimestamp := int(timestamp.Add(-1 * time.Duration(pollOffset) * time.Second).Unix())
+	currentUnixTimestamp := int(currentTimestamp.Add(-1 * time.Duration(pollOffset) * time.Second).Unix())
 
 	// Convert timestamp
 	count, err = akamaiClient.getLogs(unixTimestamp, currentUnixTimestamp, resultsChannel)

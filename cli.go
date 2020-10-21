@@ -19,6 +19,7 @@ func setupCliFlags() error {
 	flag.StringP("config", "c", "", "config file")
 	flag.StringP("input", "i", "", "log source (microsoft, )")
 	flag.Int("schedule", 30, "time in seconds to collect")
+	flag.Int("poll-offset", 60, "time in seconds in the past to offset poll results")
 	flag.String("state-path", "collector.state", "state file path")
 	flag.BoolP("verbose", "v", false, "verbose logging")
 	outputs.InitCLIParams()

@@ -13,7 +13,7 @@ const ClientTypePoll = 1
 const ClientTypeStream = 2
 
 type Client interface {
-	Poll(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error)
+	Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error)
 	Stream(streamChannel chan<- string) (cancelFunc func(), err error)
 	Exit() error
 }
@@ -38,10 +38,10 @@ func New(client Client, clientType ClientType, logger *outputs.TmpWriter, stateP
 	}, nil
 }
 
-func (i *Collector) Start(scheduleTime int, resultsChannel chan<- string, ctx context.Context) {
+func (i *Collector) Start(scheduleTime int, pollOffset int, resultsChannel chan<- string, ctx context.Context) {
 	switch i.clientType {
 	case ClientTypePoll:
-		i.Poll(scheduleTime, resultsChannel, ctx)
+		i.Poll(scheduleTime, pollOffset, resultsChannel, ctx)
 	case ClientTypeStream:
 		i.Stream(scheduleTime, resultsChannel, ctx)
 	}

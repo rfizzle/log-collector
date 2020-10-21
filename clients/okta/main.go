@@ -31,13 +31,13 @@ func New(options map[string]interface{}) (*Client, error) {
 }
 
 // Collect will query the source and pass the results back through a result channel
-func (oktaClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
+func (oktaClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error) {
 	// Get Current Time
 	currentTimestamp = time.Now()
 
 	// Convert timestamp
-	lastTimeString := timestamp.Format(time.RFC3339)
-	currentTimeString := currentTimestamp.Format(time.RFC3339)
+	lastTimeString := timestamp.Add(-1 * time.Duration(pollOffset) * time.Second).Format(time.RFC3339)
+	currentTimeString := currentTimestamp.Add(-1 * time.Duration(pollOffset) * time.Second).Format(time.RFC3339)
 	count, err = oktaClient.GetLogs(lastTimeString, currentTimeString, resultsChannel)
 	return count, currentTimestamp, err
 }

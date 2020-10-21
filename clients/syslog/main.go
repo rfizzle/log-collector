@@ -20,7 +20,7 @@ func New(options map[string]interface{}) (*Client, error) {
 	}, nil
 }
 
-func (syslogClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string) (count int, currentTimestamp time.Time, err error) {
+func (syslogClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error) {
 	return 0, time.Now(), fmt.Errorf("unsupported client collection method")
 }
 
