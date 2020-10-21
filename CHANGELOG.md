@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/rfizzle/log-collector/compare/v0.1.2...v0.2.0) (2020-10-21)
+
+
+### Features
+
+* added poll offset option in order to retrieve logs that have a delay ([46c879e](https://github.com/rfizzle/log-collector/commit/46c879e024fc6f779ca3dd11bc222b17f40a76be))
+
+
+
 ## [0.1.2](https://github.com/rfizzle/log-collector/compare/v0.1.1...v0.1.2) (2020-10-21)
 
 
