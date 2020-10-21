@@ -87,7 +87,7 @@ func validateClientParams() (map[string]interface{}, error) {
 			return nil, errors.New("missing okta api key param (--okta-api-key)")
 		}
 		clientOptions["domain"] = viper.GetString("okta-domain")
-		clientOptions["api-key"] = viper.GetString("okta-api-key")
+		clientOptions["apiKey"] = viper.GetString("okta-api-key")
 	case "gsuite":
 		if viper.GetString("gsuite-credentials") == "" {
 			return nil, errors.New("missing google credentials param (--gsuite-credentials)")
@@ -144,9 +144,9 @@ func validateClientParams() (map[string]interface{}, error) {
 		clientOptions["port"] = viper.GetInt("syslog-port")
 		clientOptions["protocol"] = viper.GetString("syslog-protocol")
 		clientOptions["parser"] = viper.GetString("syslog-parser")
-		clientOptions["grok-pattern"] = viper.GetStringSlice("syslog-grok-pattern")
-		clientOptions["keep-info"] = viper.GetBool("syslog-keep-info")
-		clientOptions["keep-message"] = viper.GetBool("syslog-keep-message")
+		clientOptions["grokPattern"] = viper.GetStringSlice("syslog-grok-pattern")
+		clientOptions["keepInfo"] = viper.GetBool("syslog-keep-info")
+		clientOptions["keepMessage"] = viper.GetBool("syslog-keep-message")
 	}
 
 	return clientOptions, nil

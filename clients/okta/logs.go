@@ -125,7 +125,7 @@ func (oktaClient *Client) conductRequest(method string, uri string, params url.V
 	// Setup headers
 	headers := make(map[string]string)
 	headers["Accept"] = "application/json"
-	headers["Authorization"] = fmt.Sprintf("SSWS %s", oktaClient.Options["api-key"].(string))
+	headers["Authorization"] = fmt.Sprintf("SSWS %s", oktaClient.Options["apiKey"].(string))
 	headers["Content-Type"] = "application/json"
 
 	// JSON marshal body if POST or PUT

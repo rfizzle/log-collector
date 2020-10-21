@@ -32,7 +32,7 @@ func (syslogClient *Client) syslogStreamParsing(streamChannel chan<- string) {
 		// Parse content
 		if parserType == "grok" {
 			// Construct JSON from GROK patterns
-			jsonString, err = parser.ParseGrok(logMessage, syslogClient.Options["grok-pattern"].([]string))
+			jsonString, err = parser.ParseGrok(logMessage, syslogClient.Options["grokPattern"].([]string))
 
 			// Handle errors in grok parsing
 			if err != nil {
@@ -76,7 +76,7 @@ func (syslogClient *Client) syslogStreamParsing(streamChannel chan<- string) {
 			}
 		}
 
-		if parserType != "raw" && syslogClient.Options["keep-info"].(bool) {
+		if parserType != "raw" && syslogClient.Options["keepInfo"].(bool) {
 			// Merge message and syslog info
 			finalJsonMap := make(map[string]interface{})
 			err = json.Unmarshal(jsonString, &finalJsonMap)
@@ -89,7 +89,7 @@ func (syslogClient *Client) syslogStreamParsing(streamChannel chan<- string) {
 
 			// Loop through syslog info and add to final json object
 			for k, v := range logParts {
-				if (k == "message" || k == "content") && !syslogClient.Options["keep-message"].(bool) {
+				if (k == "message" || k == "content") && !syslogClient.Options["keepMessage"].(bool) {
 					continue
 				}
 				finalJsonMap[k] = v
