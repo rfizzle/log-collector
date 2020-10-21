@@ -122,9 +122,8 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: .
           push: true
-          tags: ${{ secrets.DOCKER_REPO }}:latest,${{ steps.changelog.outputs.version }}
+          tags: rfizzle/log-collector:latest,rfizzle/log-collector:${{ steps.changelog.outputs.version }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
       - name: Push changes
