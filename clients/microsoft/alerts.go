@@ -2,7 +2,6 @@ package microsoft
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/tidwall/pretty"
@@ -238,8 +237,18 @@ func (microsoftClient *Client) makeRetryableHttpCall(
 		resp, err := microsoftClient.httpClient.Do(request)
 		var body []byte
 
+		// Handle error
+		if err != nil {
+			return nil, nil, err
+		}
+
+		// Handle missing response
+		if resp == nil {
+			return nil, nil, fmt.Errorf("invalid response")
+		}
+
 		// Return non 200 and non rate limit responses
-		if err != nil || (resp.StatusCode != 200 && resp.StatusCode != rateLimitHttpCode) {
+		if resp.StatusCode != 200 && resp.StatusCode != rateLimitHttpCode {
 			// Warn on 206 Partial Content
 			if resp.StatusCode == 206 {
 				log.Warnf("header present - `Warning: %v`", resp.Header.Get("Warning"))
@@ -250,9 +259,11 @@ func (microsoftClient *Client) makeRetryableHttpCall(
 			body, err = ioutil.ReadAll(resp.Body)
 			err = resp.Body.Close()
 
+			// Setup error if nil
 			if err == nil {
-				return resp, body, errors.New(resp.Status)
+				return resp, body, fmt.Errorf("%s", resp.Status)
 			}
+
 			return resp, body, err
 		}
 
