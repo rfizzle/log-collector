@@ -61,7 +61,7 @@ func (akamaiClient *Client) getLogs(startTime, endTime int, resultsChannel chan<
 		pageNumber += 1
 
 		// Break if end conditions are met
-		if total == pageSize || count == total {
+		if total == pageSize || count >= total {
 			break
 		}
 	}
