@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/rfizzle/log-collector/compare/v0.2.1...v0.3.0) (2020-11-09)
+
+
+### Features
+
+* added limit for the span of time to retrieve logs to 2 hours in order to prevent large polls ([02524af](https://github.com/rfizzle/log-collector/commit/02524afd24bb029a459059257e629512cfc6f229))
+
+
+
 ## [0.2.1](https://github.com/rfizzle/log-collector/compare/v0.2.0...v0.2.1) (2020-11-06)
 
 
@@ -43,17 +52,6 @@
 * updated Dockerfile to have a temp directory ([4327d07](https://github.com/rfizzle/log-collector/commit/4327d07632bd82de1d431c54ea27bb28b056b4b7))
 * updated release pipeline to have a clean version number for Docker release ([32d27fb](https://github.com/rfizzle/log-collector/commit/32d27fbb31c91f5e6b245f285bf63e28b0046d07))
 * updated state to start new collectors off at current time ([25d16e3](https://github.com/rfizzle/log-collector/commit/25d16e340160bc82daa082bbe1f6f9bbdb85759f))
-
-
-
-# [0.1.0](https://github.com/rfizzle/log-collector/compare/c5ea3d31e50bd78bd7b01564377f7cb3d711dc93...v0.1.0) (2020-10-20)
-
-
-### Features
-
-* added Dockerfile ([546046b](https://github.com/rfizzle/log-collector/commit/546046b87222c0f06eb6f803827e867855a16e65))
-* added syslog input and support for streaming clients ([fc68cb7](https://github.com/rfizzle/log-collector/commit/fc68cb735141d225505e9569ab04b02aa93d936e))
-* initial commit ([c5ea3d3](https://github.com/rfizzle/log-collector/commit/c5ea3d31e50bd78bd7b01564377f7cb3d711dc93))
 
 
 
