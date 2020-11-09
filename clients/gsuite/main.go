@@ -25,8 +25,13 @@ func New(options map[string]interface{}) (*Client, error) {
 func (gsuiteClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error) {
 	count = 0
 
-	// Get Current Time
-	currentTimestamp = time.Now()
+	// If the span between last poll and now is larger than 2 hours, limit the span to 2 hours
+	if timestamp.Add(time.Duration(2) * time.Hour).Before(time.Now()) {
+		log.Infof("timestamp span too long; limiting to 2 hours")
+		currentTimestamp = timestamp.Add(time.Duration(2) * time.Hour)
+	} else {
+		currentTimestamp = time.Now()
+	}
 
 	// Convert timestamp
 	lastTimeString := timestamp.Add(-1 * time.Duration(pollOffset) * time.Second).Format(time.RFC3339)

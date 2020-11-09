@@ -2,6 +2,7 @@ package microsoft
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 )
@@ -26,8 +27,13 @@ func New(options map[string]interface{}) (*Client, error) {
 
 // Collect will query the source and pass the results back through a result channel
 func (microsoftClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error) {
-	// Get Current Time
-	currentTimestamp = time.Now()
+	// If the span between last poll and now is larger than 2 hours, limit the span to 2 hours
+	if timestamp.Add(time.Duration(2) * time.Hour).Before(time.Now()) {
+		log.Infof("timestamp span too long; limiting to 2 hours")
+		currentTimestamp = timestamp.Add(time.Duration(2) * time.Hour)
+	} else {
+		currentTimestamp = time.Now()
+	}
 
 	// Login to client
 	if err := microsoftClient.login(); err != nil {
