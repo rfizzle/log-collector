@@ -44,7 +44,7 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 				log.Debugf("%d total events to process...", eventCount)
 
 				// Wait until the results channel has no more messages and all writes have completed
-				for len(resultsChannel) > 0 || i.tmpWriter.WriteCount != eventCount {
+				for len(resultsChannel) > 0 || i.tmpWriter.WriteCount < eventCount {
 					// Debug log channel flush wait
 					log.Debugf("flushing channel... channel size: %d; write count: %d; event count: %d", len(resultsChannel), i.tmpWriter.WriteCount, eventCount)
 					<-time.After(time.Duration(1) * time.Second)
