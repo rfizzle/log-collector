@@ -48,7 +48,6 @@ func (gsuiteClient *Client) Poll(timestamp time.Time, resultsChannel chan<- stri
 
 	// Loop through event types
 	for _, eventType := range eventTypes {
-		log.Debugf("Getting event type %s\n", eventType)
 		resultSize, err := gsuiteClient.activitiesList(srv, eventType, lastTimeString, currentTimeString, resultsChannel)
 		if err != nil {
 			log.Fatalf("Unable to retrieve activities list for %s: %v", eventType, err)
