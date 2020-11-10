@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/rfizzle/log-collector/compare/v0.3.0...v0.3.1) (2020-11-09)
+
+
+### Bug Fixes
+
+* fixed hang when more events have been written to output that the current count ([8df98c6](https://github.com/rfizzle/log-collector/commit/8df98c61aa78553550ce2407d95499d4262e9cd7))
+
+
+
 # [0.3.0](https://github.com/rfizzle/log-collector/compare/v0.2.1...v0.3.0) (2020-11-09)
 
 
@@ -37,21 +46,6 @@
 * fixed Dockerfile cache copy issue https://github.com/moby/moby/issues/37965 ([9069cd0](https://github.com/rfizzle/log-collector/commit/9069cd0fd4ac4d1e5e9e647be9690c8c9787b4e0))
 * fixed tag reference in docker build CI step ([48a030e](https://github.com/rfizzle/log-collector/commit/48a030efe9989d1bf9fbc7da0af1c4b3756f1a66))
 * fixed timer in poll and stream methods ([cd803a4](https://github.com/rfizzle/log-collector/commit/cd803a4ec830d0c74657834ac7c9de3d7856bbab))
-
-
-
-## [0.1.1](https://github.com/rfizzle/log-collector/compare/v0.1.0...v0.1.1) (2020-10-20)
-
-
-### Bug Fixes
-
-* fixed formatting in release pipeline ([82149cc](https://github.com/rfizzle/log-collector/commit/82149cc0557a5c15c0ee9b7aeda8cb4bab967962))
-* fixed id syntax in release pipeline ([538014e](https://github.com/rfizzle/log-collector/commit/538014eb8bca696a360fb5bb2ebd4532f5ebbc4a))
-* fixed name syntax in release pipeline ([2b1810f](https://github.com/rfizzle/log-collector/commit/2b1810fe477724129df580f165c74abdef6cca63))
-* removed redundant release pipeline step after finding additional step output variable ([f6d872c](https://github.com/rfizzle/log-collector/commit/f6d872c859e3b1d822cb09a1efffbdb90b8b7431))
-* updated Dockerfile to have a temp directory ([4327d07](https://github.com/rfizzle/log-collector/commit/4327d07632bd82de1d431c54ea27bb28b056b4b7))
-* updated release pipeline to have a clean version number for Docker release ([32d27fb](https://github.com/rfizzle/log-collector/commit/32d27fbb31c91f5e6b245f285bf63e28b0046d07))
-* updated state to start new collectors off at current time ([25d16e3](https://github.com/rfizzle/log-collector/commit/25d16e340160bc82daa082bbe1f6f9bbdb85759f))
 
 
 
