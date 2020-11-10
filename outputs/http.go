@@ -97,7 +97,7 @@ func conductRequestRaw(rawUrl, bodyString, rawAuth string) ([]byte, error) {
 		headers["Authorization"] = rawAuth
 	}
 
-	log.Debugf("Calling URL: %s\n", urlObj.String())
+	log.Debugf("Calling URL: %s", urlObj.String())
 
 	_, body, err := makeRetryableHttpCall("POST", *urlObj, headers, bodyString)
 
