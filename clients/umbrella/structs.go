@@ -1,6 +1,8 @@
 package umbrella
 
-import "net/http"
+import (
+	"github.com/go-resty/resty/v2"
+)
 
 type AuthResponse struct {
 	TokenType   string `json:"token_type"`
@@ -16,5 +18,5 @@ type ActivityResponse struct {
 type Client struct {
 	Options     map[string]interface{}
 	AccessToken string `json:"access_token"`
-	httpClient  *http.Client
+	restyClient *resty.Client
 }

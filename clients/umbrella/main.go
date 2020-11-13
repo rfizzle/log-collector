@@ -3,7 +3,6 @@ package umbrella
 import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
-	"net/http"
 	"time"
 )
 
@@ -12,9 +11,7 @@ func New(options map[string]interface{}) (*Client, error) {
 	return &Client{
 		Options:     options,
 		AccessToken: "",
-		httpClient: &http.Client{
-			Timeout: time.Second * 10,
-		},
+		restyClient: setupRestyClient(),
 	}, nil
 }
 

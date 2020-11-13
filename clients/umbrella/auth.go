@@ -7,14 +7,11 @@ import (
 )
 
 func (umbrellaClient *Client) login() error {
-	// Setup Resty client
-	client := setupRestyClient()
-
 	// Write debug log
 	log.Debugf("authenticating umbrella client...")
 
 	// Make request
-	resp, err := client.R().
+	resp, err := umbrellaClient.restyClient.R().
 		SetBasicAuth(umbrellaClient.Options["key"].(string), umbrellaClient.Options["secret"].(string)).
 		SetFormData(map[string]string{
 			"grant_type": "client_credentials",

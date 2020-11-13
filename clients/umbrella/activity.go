@@ -37,14 +37,11 @@ func (umbrellaClient *Client) getActivity(lastPollTimestamp, currentTimestamp st
 	currentPollMillis := timeToMilli(currentPollTime)
 
 	for !isDone {
-		// Setup Resty client
-		client := setupRestyClient()
-
 		// Write debug log
 		log.Debugf("collecting %d activity results with offset of %d", limit, offset)
 
 		// Make request
-		resp, err := client.R().
+		resp, err := umbrellaClient.restyClient.R().
 			SetQueryParams(map[string]string{
 				"from":   fmt.Sprintf("%d", lastPollMillis),
 				"to":     fmt.Sprintf("%d", currentPollMillis),
