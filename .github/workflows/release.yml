@@ -52,8 +52,6 @@ jobs:
       - name: Setup Ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update && sudo apt-get install -y gcc-multilib
-      - name: Set release name
-        run: echo "::set-env name=RELEASE::log-collector-${{ matrix.releaseos }}-${{ matrix.arch }}"
       - uses: actions/checkout@v2
       - name: Build ${{ matrix.goos }}/${{ matrix.arch }}
         run: go build -o ${{ matrix.bin }}
@@ -64,7 +62,7 @@ jobs:
       - name: Upload to artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.RELEASE }}
+          name: log-collector-${{ matrix.releaseos }}-${{ matrix.arch }}
           path: ${{ matrix.bin }}
   release:
     name: Create Release
