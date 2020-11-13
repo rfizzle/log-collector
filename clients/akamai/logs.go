@@ -112,14 +112,13 @@ func (akamaiClient *Client) conductRequest(request *http.Request, resultsChannel
 	pageNumber = builtResponse.PageInfo.PageNumber
 	pageSize = builtResponse.PageInfo.PageSize
 
+	// Convert to array of strings
+	events := convertInterfaceToString(builtResponse.DataRows)
+
 	// Send data to response channel in JSON ugly single line format
-	for _, v := range builtResponse.DataRows {
-		vBytes, err := json.Marshal(v)
-		if err != nil {
-			return count, total, pageNumber, pageSize, err
-		}
+	for _, event := range events {
 		count += 1
-		resultsChannel <- string(pretty.Ugly(vBytes))
+		resultsChannel <- string(pretty.Ugly([]byte(event)))
 	}
 
 	return count, total, pageNumber, pageSize, nil

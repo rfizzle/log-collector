@@ -1,6 +1,7 @@
 package akamai
 
 import (
+	"encoding/json"
 	"strconv"
 	"time"
 )
@@ -15,4 +16,17 @@ func UnixStringToTime(s string) time.Time {
 		panic(err)
 	}
 	return time.Unix(i, 0)
+}
+
+func convertInterfaceToString(items []interface{}) []string {
+	var data []string
+	for _, val := range items {
+		// Convert item to json byte array
+		plain, _ := json.Marshal(val)
+
+		// Add string to array
+		data = append(data, string(plain))
+	}
+
+	return data
 }
