@@ -86,13 +86,13 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 
 				// Let know that event has been processes
 				log.Infof("%v events processed", eventCount)
-
-				// Update state
-				i.state.Data.LastPollTimestamp = lastPollTime.Format(time.RFC3339)
-				i.state.Save()
 			} else {
 				log.Infof("no new events to process...")
 			}
+
+			// Update state
+			i.state.Data.LastPollTimestamp = lastPollTime.Format(time.RFC3339)
+			i.state.Save()
 		}
 	}
 }
