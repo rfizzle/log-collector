@@ -7,6 +7,7 @@ import (
 	msGraph "github.com/rfizzle/log-collector/clients/microsoft"
 	oktaClient "github.com/rfizzle/log-collector/clients/okta"
 	"github.com/rfizzle/log-collector/clients/syslog"
+	umbrellaClient "github.com/rfizzle/log-collector/clients/umbrella"
 	"github.com/rfizzle/log-collector/collector"
 	flag "github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -36,6 +37,9 @@ func InitClientParams() {
 	flag.StringArray("syslog-grok-pattern", []string{}, "syslog grok pattern to parse logs to")
 	flag.Bool("syslog-keep-info", false, "syslog keep original syslog information")
 	flag.Bool("syslog-keep-message", false, "syslog keep the original syslog message")
+	flag.String("umbrella-key", "", "umbrella api token key")
+	flag.String("umbrella-secret", "", "umbrella api token secret")
+	flag.String("umbrella-org-id", "", "umbrella organization id")
 }
 
 func InitializeClient() (collector.Client, collector.ClientType, error) {
@@ -59,6 +63,9 @@ func InitializeClient() (collector.Client, collector.ClientType, error) {
 	case "syslog":
 		client, err := syslog.New(options)
 		return client, collector.ClientTypeStream, err
+	case "umbrella":
+		client, err := umbrellaClient.New(options)
+		return client, collector.ClientTypePoll, err
 	}
 	return nil, 0, nil
 }
@@ -147,6 +154,19 @@ func validateClientParams() (map[string]interface{}, error) {
 		clientOptions["grokPattern"] = viper.GetStringSlice("syslog-grok-pattern")
 		clientOptions["keepInfo"] = viper.GetBool("syslog-keep-info")
 		clientOptions["keepMessage"] = viper.GetBool("syslog-keep-message")
+	case "umbrella":
+		if viper.GetString("umbrella-key") == "" {
+			return nil, errors.New("invalid umbrella-key param (--umbrella-key)")
+		}
+		if viper.GetString("umbrella-secret") == "" {
+			return nil, errors.New("invalid umbrella-secret param (--umbrella-secret)")
+		}
+		if viper.GetString("umbrella-org-id") == "" {
+			return nil, errors.New("invalid umbrella-org-id param (--umbrella-org-id)")
+		}
+		clientOptions["key"] = viper.GetString("umbrella-key")
+		clientOptions["secret"] = viper.GetString("umbrella-secret")
+		clientOptions["orgId"] = viper.GetString("umbrella-org-id")
 	}
 
 	return clientOptions, nil
