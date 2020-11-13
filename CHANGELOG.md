@@ -1,3 +1,13 @@
+## [0.4.1](https://github.com/rfizzle/log-collector/compare/v0.4.0...v0.4.1) (2020-11-13)
+
+
+### Bug Fixes
+
+* fixed logic bug on state save ([c891a3b](https://github.com/rfizzle/log-collector/commit/c891a3bd48fb8c38d579ad2dcabc02079e438a73))
+* updated akamai event processing to use same method as other inputs ([2f96f45](https://github.com/rfizzle/log-collector/commit/2f96f459c67d15b0edde807fc6afa7489374c7a1))
+
+
+
 # [0.4.0](https://github.com/rfizzle/log-collector/compare/v0.3.1...v0.4.0) (2020-11-13)
 
 
@@ -32,15 +42,6 @@
 
 * added some error handling in microsoft retryable HTTP call ([4744cfa](https://github.com/rfizzle/log-collector/commit/4744cfa7d8aa0d1c65d72abcad00ca2b679c1467))
 * changed check to be equal to or greater for request loop ([b7b0b26](https://github.com/rfizzle/log-collector/commit/b7b0b26c7e7529afd044306be93cbe75517d1907))
-
-
-
-# [0.2.0](https://github.com/rfizzle/log-collector/compare/v0.1.2...v0.2.0) (2020-10-21)
-
-
-### Features
-
-* added poll offset option in order to retrieve logs that have a delay ([46c879e](https://github.com/rfizzle/log-collector/commit/46c879e024fc6f779ca3dd11bc222b17f40a76be))
 
 
 
