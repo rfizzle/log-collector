@@ -1,3 +1,12 @@
+## [0.4.2](https://github.com/rfizzle/log-collector/compare/v0.4.1...v0.4.2) (2020-11-20)
+
+
+### Bug Fixes
+
+* updated umbrella collector to only pull blocked and proxied activity ([54212da](https://github.com/rfizzle/log-collector/commit/54212da60e30a9fb1bf2c451185b959f10c8683e))
+
+
+
 ## [0.4.1](https://github.com/rfizzle/log-collector/compare/v0.4.0...v0.4.1) (2020-11-13)
 
 
@@ -32,16 +41,6 @@
 ### Features
 
 * added limit for the span of time to retrieve logs to 2 hours in order to prevent large polls ([02524af](https://github.com/rfizzle/log-collector/commit/02524afd24bb029a459059257e629512cfc6f229))
-
-
-
-## [0.2.1](https://github.com/rfizzle/log-collector/compare/v0.2.0...v0.2.1) (2020-11-06)
-
-
-### Bug Fixes
-
-* added some error handling in microsoft retryable HTTP call ([4744cfa](https://github.com/rfizzle/log-collector/commit/4744cfa7d8aa0d1c65d72abcad00ca2b679c1467))
-* changed check to be equal to or greater for request loop ([b7b0b26](https://github.com/rfizzle/log-collector/commit/b7b0b26c7e7529afd044306be93cbe75517d1907))
 
 
 
