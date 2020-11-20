@@ -43,10 +43,11 @@ func (umbrellaClient *Client) getActivity(lastPollTimestamp, currentTimestamp st
 		// Make request
 		resp, err := umbrellaClient.restyClient.R().
 			SetQueryParams(map[string]string{
-				"from":   fmt.Sprintf("%d", lastPollMillis),
-				"to":     fmt.Sprintf("%d", currentPollMillis),
-				"limit":  fmt.Sprintf("%d", limit),
-				"offset": fmt.Sprintf("%d", offset),
+				"from":    fmt.Sprintf("%d", lastPollMillis),
+				"to":      fmt.Sprintf("%d", currentPollMillis),
+				"limit":   fmt.Sprintf("%d", limit),
+				"offset":  fmt.Sprintf("%d", offset),
+				"verdict": "blocked,proxied",
 			}).
 			SetHeader("Accept", "application/json").
 			SetAuthToken(umbrellaClient.AccessToken).
