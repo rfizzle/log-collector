@@ -9,37 +9,36 @@ import (
 
 type ClientType int
 
-const ClientTypePoll = 1
-const ClientTypeStream = 2
+const ClientTypePoll = ClientType(1)
+const ClientTypeStream = ClientType(2)
 
 type Client interface {
 	Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error)
 	Stream(streamChannel chan<- string) (cancelFunc func(), err error)
+	ClientType() ClientType
 	Exit() error
 }
 
 type Collector struct {
-	client     Client
-	clientType ClientType
-	tmpWriter  *outputs.TmpWriter
-	state      *State
+	client    Client
+	tmpWriter *outputs.TmpWriter
+	state     *State
 }
 
-func New(client Client, clientType ClientType, logger *outputs.TmpWriter, statePath string) (*Collector, error) {
+func New(client Client, logger *outputs.TmpWriter, statePath string) (*Collector, error) {
 	s, err := newState(statePath)
 	if err != nil {
 		return nil, err
 	}
 	return &Collector{
-		client:     client,
-		clientType: clientType,
-		tmpWriter:  logger,
-		state:      s,
+		client:    client,
+		tmpWriter: logger,
+		state:     s,
 	}, nil
 }
 
 func (i *Collector) Start(scheduleTime int, pollOffset int, resultsChannel chan<- string, ctx context.Context) {
-	switch i.clientType {
+	switch i.client.ClientType() {
 	case ClientTypePoll:
 		i.Poll(scheduleTime, pollOffset, resultsChannel, ctx)
 	case ClientTypeStream:

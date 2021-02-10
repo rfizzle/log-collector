@@ -2,6 +2,7 @@ package microsoft
 
 import (
 	"fmt"
+	"github.com/rfizzle/log-collector/collector"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
@@ -15,7 +16,7 @@ const (
 )
 
 // New will initialize and return an authorized Client
-func New(options map[string]interface{}) (*Client, error) {
+func New(options map[string]interface{}) (collector.Client, error) {
 	return &Client{
 		Options:     options,
 		AccessToken: "",
@@ -49,6 +50,10 @@ func (microsoftClient *Client) Poll(timestamp time.Time, resultsChannel chan<- s
 
 func (microsoftClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
 	return nil, fmt.Errorf("unsupported client collection method")
+}
+
+func (microsoftClient *Client) ClientType() collector.ClientType {
+	return collector.ClientTypePoll
 }
 
 func (microsoftClient *Client) Exit() (err error) {

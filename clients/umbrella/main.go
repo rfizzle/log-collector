@@ -2,12 +2,13 @@ package umbrella
 
 import (
 	"fmt"
+	"github.com/rfizzle/log-collector/collector"
 	log "github.com/sirupsen/logrus"
 	"time"
 )
 
 // New will initialize and return an authorized Client
-func New(options map[string]interface{}) (*Client, error) {
+func New(options map[string]interface{}) (collector.Client, error) {
 	return &Client{
 		Options:     options,
 		AccessToken: "",
@@ -39,6 +40,10 @@ func (umbrellaClient *Client) Poll(timestamp time.Time, resultsChannel chan<- st
 
 func (umbrellaClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
 	return nil, fmt.Errorf("unsupported client collection method")
+}
+
+func (umbrellaClient *Client) ClientType() collector.ClientType {
+	return collector.ClientTypePoll
 }
 
 func (umbrellaClient *Client) Exit() (err error) {

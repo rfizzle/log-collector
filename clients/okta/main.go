@@ -2,6 +2,7 @@ package okta
 
 import (
 	"fmt"
+	"github.com/rfizzle/log-collector/collector"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
@@ -16,13 +17,14 @@ const (
 )
 
 type Client struct {
+	collector.Client
 	Options    map[string]interface{}
 	httpClient *http.Client
 	lastResp   *http.Response
 }
 
 // New will initialize and return an authorized Client
-func New(options map[string]interface{}) (*Client, error) {
+func New(options map[string]interface{}) (collector.Client, error) {
 	return &Client{
 		Options: options,
 		httpClient: &http.Client{
@@ -50,6 +52,10 @@ func (oktaClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string
 
 func (oktaClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
 	return nil, fmt.Errorf("unsupported client collection method")
+}
+
+func (oktaClient *Client) ClientType() collector.ClientType {
+	return collector.ClientTypePoll
 }
 
 func (oktaClient *Client) Exit() (err error) {

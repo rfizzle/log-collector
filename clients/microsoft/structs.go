@@ -2,6 +2,7 @@ package microsoft
 
 import (
 	"encoding/json"
+	"github.com/rfizzle/log-collector/collector"
 	"net/http"
 )
 
@@ -13,6 +14,7 @@ type GraphAuthResponse struct {
 }
 
 type Client struct {
+	collector.Client
 	Options     map[string]interface{}
 	AccessToken string `json:"access_token"`
 	httpClient  *http.Client

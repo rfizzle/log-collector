@@ -2,9 +2,11 @@ package akamai
 
 import (
 	"github.com/akamai/AkamaiOPEN-edgegrid-golang/edgegrid"
+	"github.com/rfizzle/log-collector/collector"
 )
 
 type Client struct {
+	collector.Client
 	Options     map[string]interface{}
 	domain      string
 	etpConfigId string

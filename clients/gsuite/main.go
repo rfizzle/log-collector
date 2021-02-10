@@ -3,6 +3,7 @@ package gsuite
 import (
 	"context"
 	"fmt"
+	"github.com/rfizzle/log-collector/collector"
 	log "github.com/sirupsen/logrus"
 	adminreports "google.golang.org/api/admin/reports/v1"
 	"google.golang.org/api/option"
@@ -10,7 +11,7 @@ import (
 )
 
 // New will initialize and return an authorized Client
-func New(options map[string]interface{}) (*Client, error) {
+func New(options map[string]interface{}) (collector.Client, error) {
 	httpClient, err := buildHttpClient(options["credentialFile"].(string), options["impersonationUser"].(string))
 	if err != nil {
 		return nil, err
@@ -61,6 +62,10 @@ func (gsuiteClient *Client) Poll(timestamp time.Time, resultsChannel chan<- stri
 
 func (gsuiteClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
 	return nil, fmt.Errorf("unsupported client collection method")
+}
+
+func (gsuiteClient *Client) ClientType() collector.ClientType {
+	return collector.ClientTypePoll
 }
 
 func (gsuiteClient *Client) Exit() (err error) {

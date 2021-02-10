@@ -3,11 +3,12 @@ package akamai
 import (
 	"fmt"
 	"github.com/akamai/AkamaiOPEN-edgegrid-golang/edgegrid"
+	"github.com/rfizzle/log-collector/collector"
 	log "github.com/sirupsen/logrus"
 	"time"
 )
 
-func New(options map[string]interface{}) (*Client, error) {
+func New(options map[string]interface{}) (collector.Client, error) {
 	return &Client{
 		Options:     options,
 		domain:      options["domain"].(string),
@@ -45,6 +46,10 @@ func (akamaiClient *Client) Poll(timestamp time.Time, resultsChannel chan<- stri
 
 func (akamaiClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
 	return nil, fmt.Errorf("unsupported client collection method")
+}
+
+func (akamaiClent *Client) ClientType() collector.ClientType {
+	return collector.ClientTypePoll
 }
 
 func (akamaiClient *Client) Exit() (err error) {

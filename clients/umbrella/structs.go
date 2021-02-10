@@ -2,6 +2,7 @@ package umbrella
 
 import (
 	"github.com/go-resty/resty/v2"
+	"github.com/rfizzle/log-collector/collector"
 )
 
 type AuthResponse struct {
@@ -16,6 +17,7 @@ type ActivityResponse struct {
 }
 
 type Client struct {
+	collector.Client
 	Options     map[string]interface{}
 	AccessToken string `json:"access_token"`
 	restyClient *resty.Client

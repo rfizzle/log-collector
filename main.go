@@ -61,7 +61,7 @@ func main() {
 	setupCloseHandler(cancel, chnMessages)
 
 	// Setup Client
-	collectorClient, clientType, err := clients.InitializeClient()
+	collectorClient, err := clients.InitializeClient()
 
 	if err != nil {
 		log.Errorf("error creating client: %v", err)
@@ -72,7 +72,7 @@ func main() {
 	log.Infof("starting collector...")
 
 	// Setup input
-	collectorObject, err := collector.New(collectorClient, clientType, logger, statePath)
+	collectorObject, err := collector.New(collectorClient, logger, statePath)
 	if err != nil {
 		log.Errorf("error creating collector interface: %v", err)
 		os.Exit(1)

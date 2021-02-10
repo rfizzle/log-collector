@@ -2,19 +2,21 @@ package syslog
 
 import (
 	"fmt"
+	"github.com/rfizzle/log-collector/collector"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/mcuadros/go-syslog.v2"
 	"time"
 )
 
 type Client struct {
+	collector.Client
 	Options    map[string]interface{}
 	logChannel syslog.LogPartsChannel
 	logHandler *syslog.ChannelHandler
 }
 
 // New will initialize and return an authorized Client
-func New(options map[string]interface{}) (*Client, error) {
+func New(options map[string]interface{}) (collector.Client, error) {
 	return &Client{
 		Options: options,
 	}, nil
@@ -81,6 +83,10 @@ func (syslogClient *Client) Stream(streamChannel chan<- string) (cancelFunc func
 	}
 
 	return cancelFunc, err
+}
+
+func (syslogClient *Client) ClientType() collector.ClientType {
+	return collector.ClientTypeStream
 }
 
 func (syslogClient *Client) Exit() (err error) {
