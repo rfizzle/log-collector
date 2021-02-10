@@ -8,6 +8,7 @@ import (
 	oktaClient "github.com/rfizzle/log-collector/clients/okta"
 	"github.com/rfizzle/log-collector/clients/syslog"
 	umbrellaClient "github.com/rfizzle/log-collector/clients/umbrella"
+	zendeskClient "github.com/rfizzle/log-collector/clients/zendesk"
 	"github.com/rfizzle/log-collector/collector"
 	flag "github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -40,34 +41,33 @@ func InitClientParams() {
 	flag.String("umbrella-key", "", "umbrella api token key")
 	flag.String("umbrella-secret", "", "umbrella api token secret")
 	flag.String("umbrella-org-id", "", "umbrella organization id")
+	flag.String("zendesk-domain", "", "zendesk domain")
+	flag.String("zendesk-email", "", "zendesk account email")
+	flag.String("zendesk-password", "", "zendesk password")
 }
 
-func InitializeClient() (collector.Client, collector.ClientType, error) {
+func InitializeClient() (collector.Client, error) {
 	options, err := validateClientParams()
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	switch viper.GetString("input") {
 	case "microsoft":
-		client, err := msGraph.New(options)
-		return client, collector.ClientTypePoll, err
+		return msGraph.New(options)
 	case "okta":
-		client, err := oktaClient.New(options)
-		return client, collector.ClientTypePoll, err
+		return oktaClient.New(options)
 	case "gsuite":
-		client, err := gsuiteClient.New(options)
-		return client, collector.ClientTypePoll, err
+		return gsuiteClient.New(options)
 	case "akamai":
-		client, err := akamaiClient.New(options)
-		return client, collector.ClientTypePoll, err
+		return akamaiClient.New(options)
 	case "syslog":
-		client, err := syslog.New(options)
-		return client, collector.ClientTypeStream, err
+		return syslog.New(options)
 	case "umbrella":
-		client, err := umbrellaClient.New(options)
-		return client, collector.ClientTypePoll, err
+		return umbrellaClient.New(options)
+	case "zendesk":
+		return zendeskClient.New(options)
 	}
-	return nil, 0, nil
+	return nil, errors.New("invalid input")
 }
 
 func validateClientParams() (map[string]interface{}, error) {
@@ -167,6 +167,19 @@ func validateClientParams() (map[string]interface{}, error) {
 		clientOptions["key"] = viper.GetString("umbrella-key")
 		clientOptions["secret"] = viper.GetString("umbrella-secret")
 		clientOptions["orgId"] = viper.GetString("umbrella-org-id")
+	case "zendesk":
+		if viper.GetString("zendesk-domain") == "" {
+			return nil, errors.New("invalid zendesk-domain param (--zendesk-domain)")
+		}
+		if viper.GetString("zendesk-email") == "" {
+			return nil, errors.New("invalid zendesk-email param (--zendesk-email)")
+		}
+		if viper.GetString("zendesk-password") == "" {
+			return nil, errors.New("invalid zendesk-password param (--zendesk-password)")
+		}
+		clientOptions["domain"] = viper.GetString("zendesk-domain")
+		clientOptions["email"] = viper.GetString("zendesk-email")
+		clientOptions["password"] = viper.GetString("zendesk-password")
 	}
 
 	return clientOptions, nil
