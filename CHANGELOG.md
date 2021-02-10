@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/rfizzle/log-collector/compare/v0.4.2...v0.5.0) (2021-02-10)
+
+
+### Features
+
+* added zendesk client ([07bfeaf](https://github.com/rfizzle/log-collector/commit/07bfeafb097e2ad864f0c2f27ba6624877f21a8b))
+
+
+
 ## [0.4.2](https://github.com/rfizzle/log-collector/compare/v0.4.1...v0.4.2) (2020-11-20)
 
 
@@ -32,15 +41,6 @@
 ### Bug Fixes
 
 * fixed hang when more events have been written to output that the current count ([8df98c6](https://github.com/rfizzle/log-collector/commit/8df98c61aa78553550ce2407d95499d4262e9cd7))
-
-
-
-# [0.3.0](https://github.com/rfizzle/log-collector/compare/v0.2.1...v0.3.0) (2020-11-09)
-
-
-### Features
-
-* added limit for the span of time to retrieve logs to 2 hours in order to prevent large polls ([02524af](https://github.com/rfizzle/log-collector/commit/02524afd24bb029a459059257e629512cfc6f229))
 
 
 
