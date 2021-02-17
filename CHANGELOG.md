@@ -1,3 +1,12 @@
+## [0.6.3](https://github.com/rfizzle/log-collector/compare/v0.6.2...v0.6.3) (2021-02-17)
+
+
+### Bug Fixes
+
+* hacky fix for empty key values in syslog ([156048e](https://github.com/rfizzle/log-collector/commit/156048e0dc1ed964cfbef52ec16c19a0b15a37cf))
+
+
+
 ## [0.6.2](https://github.com/rfizzle/log-collector/compare/v0.6.1...v0.6.2) (2021-02-17)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * added zendesk client ([07bfeaf](https://github.com/rfizzle/log-collector/commit/07bfeafb097e2ad864f0c2f27ba6624877f21a8b))
-
-
-
-## [0.4.2](https://github.com/rfizzle/log-collector/compare/v0.4.1...v0.4.2) (2020-11-20)
-
-
-### Bug Fixes
-
-* updated umbrella collector to only pull blocked and proxied activity ([54212da](https://github.com/rfizzle/log-collector/commit/54212da60e30a9fb1bf2c451185b959f10c8683e))
 
 
 
