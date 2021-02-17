@@ -6,6 +6,7 @@ import (
 	gsuiteClient "github.com/rfizzle/log-collector/clients/gsuite"
 	msGraph "github.com/rfizzle/log-collector/clients/microsoft"
 	oktaClient "github.com/rfizzle/log-collector/clients/okta"
+	pubsubClient "github.com/rfizzle/log-collector/clients/pubsub"
 	"github.com/rfizzle/log-collector/clients/syslog"
 	umbrellaClient "github.com/rfizzle/log-collector/clients/umbrella"
 	zendeskClient "github.com/rfizzle/log-collector/clients/zendesk"
@@ -44,6 +45,9 @@ func InitClientParams() {
 	flag.String("zendesk-domain", "", "zendesk domain")
 	flag.String("zendesk-email", "", "zendesk account email")
 	flag.String("zendesk-password", "", "zendesk password")
+	flag.String("pubsub-input-project", "", "pubsub project ID for input")
+	flag.String("pubsub-input-subscription-id", "", "pubsub subscription ID for input")
+	flag.String("pubsub-input-credentials", "", "pubsub credentials file for input")
 }
 
 func InitializeClient() (collector.Client, error) {
@@ -66,6 +70,8 @@ func InitializeClient() (collector.Client, error) {
 		return umbrellaClient.New(options)
 	case "zendesk":
 		return zendeskClient.New(options)
+	case "pubsub":
+		return pubsubClient.New(options)
 	}
 	return nil, errors.New("invalid input")
 }
@@ -180,6 +186,20 @@ func validateClientParams() (map[string]interface{}, error) {
 		clientOptions["domain"] = viper.GetString("zendesk-domain")
 		clientOptions["email"] = viper.GetString("zendesk-email")
 		clientOptions["password"] = viper.GetString("zendesk-password")
+	case "pubsub":
+		if viper.GetString("pubsub-input-project") == "" {
+			return nil, errors.New("invalid pubsub project ID param (--pubsub-input-project)")
+		}
+		if viper.GetString("pubsub-input-subscription-id") == "" {
+			return nil, errors.New("invalid pubsub subscription ID param (--pubsub-input-subscription-id)")
+		}
+		if !fileExists(viper.GetString("pubsub-input-credentials")) {
+			return nil, errors.New("invalid pubsub credentials file (--pubsub-input-credentials)")
+		}
+
+		clientOptions["projectID"] = viper.GetString("pubsub-input-project")
+		clientOptions["subscriptionID"] = viper.GetString("pubsub-input-subscription-id")
+		clientOptions["credentials"] = viper.GetString("pubsub-input-credentials")
 	}
 
 	return clientOptions, nil
