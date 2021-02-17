@@ -1,3 +1,12 @@
+# [0.6.0](https://github.com/rfizzle/log-collector/compare/v0.5.0...v0.6.0) (2021-02-17)
+
+
+### Features
+
+* added pubsub client and support upload of existing data ([692c290](https://github.com/rfizzle/log-collector/commit/692c2906a75fca85aaf0bfdcfe15b3157a0f0349))
+
+
+
 # [0.5.0](https://github.com/rfizzle/log-collector/compare/v0.4.2...v0.5.0) (2021-02-10)
 
 
@@ -32,15 +41,6 @@
 ### Features
 
 * added cisco umbrella input ([7b18707](https://github.com/rfizzle/log-collector/commit/7b187074ef5a99e7e23578bb60bbef1e9c4afe9a))
-
-
-
-## [0.3.1](https://github.com/rfizzle/log-collector/compare/v0.3.0...v0.3.1) (2020-11-09)
-
-
-### Bug Fixes
-
-* fixed hang when more events have been written to output that the current count ([8df98c6](https://github.com/rfizzle/log-collector/commit/8df98c61aa78553550ce2407d95499d4262e9cd7))
 
 
 
