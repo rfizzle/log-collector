@@ -1,3 +1,12 @@
+## [0.6.2](https://github.com/rfizzle/log-collector/compare/v0.6.1...v0.6.2) (2021-02-17)
+
+
+### Bug Fixes
+
+* fixed timer issue with output when streaming constant data ([5d8d187](https://github.com/rfizzle/log-collector/commit/5d8d187d14b25e5592609b6a1bb211895ec1898a))
+
+
+
 ## [0.6.1](https://github.com/rfizzle/log-collector/compare/v0.6.0...v0.6.1) (2021-02-17)
 
 
@@ -31,16 +40,6 @@
 ### Bug Fixes
 
 * updated umbrella collector to only pull blocked and proxied activity ([54212da](https://github.com/rfizzle/log-collector/commit/54212da60e30a9fb1bf2c451185b959f10c8683e))
-
-
-
-## [0.4.1](https://github.com/rfizzle/log-collector/compare/v0.4.0...v0.4.1) (2020-11-13)
-
-
-### Bug Fixes
-
-* fixed logic bug on state save ([c891a3b](https://github.com/rfizzle/log-collector/commit/c891a3bd48fb8c38d579ad2dcabc02079e438a73))
-* updated akamai event processing to use same method as other inputs ([2f96f45](https://github.com/rfizzle/log-collector/commit/2f96f459c67d15b0edde807fc6afa7489374c7a1))
 
 
 
