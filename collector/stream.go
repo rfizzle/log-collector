@@ -25,45 +25,58 @@ func (i *Collector) Stream(scheduleTime int, resultsChannel chan<- string, ctx c
 		return
 	}
 
+	doneFunc := func() {
+		// Run cancel function
+		cancelFunc()
+
+		// Exit client
+		err = i.client.Exit()
+
+		// Wait until channel has written
+		for {
+			if len(subResultsChannel) == 0 && len(resultsChannel) == 0 {
+				break
+			}
+		}
+
+		// Output and rotate
+		count = i.outputAndRotate(count)
+
+		// Exit collector
+		i.Exit()
+
+		// Close the results channel
+		close(resultsChannel)
+	}
+
 	// Infinite loop for streaming
+	t := time.NewTimer(time.Duration(scheduleTime) * time.Second)
 	for {
 		select {
 		case <-ctx.Done():
-			// Run cancel function
-			cancelFunc()
-
-			// Exit client
-			err = i.client.Exit()
-
-			// Wait until channel has written
-			for {
-				if len(subResultsChannel) == 0 && len(resultsChannel) == 0 {
-					break
-				}
-			}
-
-			// Output and rotate
-			count = i.outputAndRotate(count)
-
-			// Exit collector
-			i.Exit()
-
-			// Close the results channel
-			close(resultsChannel)
+			doneFunc()
 			return
-		case <-time.After(time.Duration(scheduleTime) * time.Second):
+		case <-t.C:
 			currentCount := atomic.LoadInt64(&count)
 			atomic.StoreInt64(&count, 0)
 			i.outputAndRotate(currentCount)
+			t = time.NewTimer(time.Duration(scheduleTime) * time.Second)
+		default:
+		}
+
+		select {
+		case <-ctx.Done():
+			doneFunc()
+			return
 		case resultString := <-subResultsChannel:
 			atomic.AddInt64(&count, 1)
 			resultsChannel <- resultString
+		default:
 		}
 	}
 }
 
 func (i *Collector) outputAndRotate(count int64) int64 {
-	log.Debug("checking for events to process...")
 	timestamp := time.Now()
 	if count > 0 {
 		// Rotate temp file
