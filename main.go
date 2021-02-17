@@ -22,7 +22,7 @@ func main() {
 	wg.Add(1)
 
 	// Setup variables
-	var maxMessages = int64(5000)
+	var maxMessages = int64(50000)
 
 	// Setup logging
 	log.SetFormatter(&log.TextFormatter{

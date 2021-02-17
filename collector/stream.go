@@ -5,12 +5,13 @@ import (
 	"github.com/rfizzle/log-collector/outputs"
 	log "github.com/sirupsen/logrus"
 	"os"
+	"sync/atomic"
 	"time"
 )
 
 func (i *Collector) Stream(scheduleTime int, resultsChannel chan<- string, ctx context.Context) {
-	count := 0
-	subResultsChannel := make(chan string, 1000)
+	var count int64 = 0
+	subResultsChannel := make(chan string, 10000)
 
 	// Setup stream with sub results channel
 	cancelFunc, err := i.client.Stream(subResultsChannel)
@@ -51,15 +52,18 @@ func (i *Collector) Stream(scheduleTime int, resultsChannel chan<- string, ctx c
 			close(resultsChannel)
 			return
 		case <-time.After(time.Duration(scheduleTime) * time.Second):
-			count = i.outputAndRotate(count)
+			currentCount := atomic.LoadInt64(&count)
+			atomic.StoreInt64(&count, 0)
+			i.outputAndRotate(currentCount)
 		case resultString := <-subResultsChannel:
-			count += 1
+			atomic.AddInt64(&count, 1)
 			resultsChannel <- resultString
 		}
 	}
 }
 
-func (i *Collector) outputAndRotate(count int) int {
+func (i *Collector) outputAndRotate(count int64) int64 {
+	log.Debug("checking for events to process...")
 	timestamp := time.Now()
 	if count > 0 {
 		// Rotate temp file
