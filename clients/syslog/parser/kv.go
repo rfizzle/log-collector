@@ -4,12 +4,23 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/jjeffery/kv"
+	"regexp"
 )
 
 // parseKeyValue will take a key value formatted string and convert it into a key value map
 func parseKeyValue(event string, cef bool) (map[string]string, error) {
+	// Clear out empty key values
+	reg := regexp.MustCompile("[a-zA-Z0-9]+=[ ]")
+	newEvent := reg.ReplaceAllString(event, " ")
+
+	// fix ending
+	if newEvent[len(newEvent)-1] == '=' {
+		reg := regexp.MustCompile("[ ][a-zA-Z0-9]+=$")
+		newEvent = reg.ReplaceAllString(newEvent, "")
+	}
+
 	// Use KeyValue library to parse
-	text, list := kv.Parse([]byte(event))
+	text, list := kv.Parse([]byte(newEvent))
 
 	// If return text then an error occurred during parsing
 	if len(text) > 0 {
