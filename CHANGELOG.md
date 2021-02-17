@@ -1,3 +1,12 @@
+## [0.6.1](https://github.com/rfizzle/log-collector/compare/v0.6.0...v0.6.1) (2021-02-17)
+
+
+### Bug Fixes
+
+* increased max messages and added atomic ints ([a29c354](https://github.com/rfizzle/log-collector/commit/a29c354df47114226cc223c6dc09a38551b7ed67))
+
+
+
 # [0.6.0](https://github.com/rfizzle/log-collector/compare/v0.5.0...v0.6.0) (2021-02-17)
 
 
@@ -32,15 +41,6 @@
 
 * fixed logic bug on state save ([c891a3b](https://github.com/rfizzle/log-collector/commit/c891a3bd48fb8c38d579ad2dcabc02079e438a73))
 * updated akamai event processing to use same method as other inputs ([2f96f45](https://github.com/rfizzle/log-collector/commit/2f96f459c67d15b0edde807fc6afa7489374c7a1))
-
-
-
-# [0.4.0](https://github.com/rfizzle/log-collector/compare/v0.3.1...v0.4.0) (2020-11-13)
-
-
-### Features
-
-* added cisco umbrella input ([7b18707](https://github.com/rfizzle/log-collector/commit/7b187074ef5a99e7e23578bb60bbef1e9c4afe9a))
 
 
 
