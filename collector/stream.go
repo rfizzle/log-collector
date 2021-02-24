@@ -71,7 +71,11 @@ func (i *Collector) Stream(scheduleTime int, resultsChannel chan<- string, ctx c
 		case resultString := <-subResultsChannel:
 			atomic.AddInt64(&count, 1)
 			resultsChannel <- resultString
-		default:
+		case <-t.C:
+			currentCount := atomic.LoadInt64(&count)
+			atomic.StoreInt64(&count, 0)
+			i.outputAndRotate(currentCount)
+			t = time.NewTimer(time.Duration(scheduleTime) * time.Second)
 		}
 	}
 }

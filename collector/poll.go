@@ -10,6 +10,7 @@ import (
 
 func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- string, ctx context.Context) {
 	// Infinite loop for polling
+	t := time.NewTimer(time.Duration(pollSeconds) * time.Second)
 	for {
 		select {
 		case <-ctx.Done():
@@ -17,7 +18,16 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 			log.Debugf("closing go routine...")
 			close(resultsChannel)
 			return
-		case <-time.After(time.Duration(pollSeconds) * time.Second):
+		default:
+		}
+
+		select {
+		case <-ctx.Done():
+			i.Exit()
+			log.Debugf("closing go routine...")
+			close(resultsChannel)
+			return
+		case <-t.C:
 			// Parse timestamp
 			lastPollTimestamp, err := time.Parse(time.RFC3339, i.state.Data.LastPollTimestamp)
 
@@ -93,6 +103,7 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 			// Update state
 			i.state.Data.LastPollTimestamp = lastPollTime.Format(time.RFC3339)
 			i.state.Save()
+			t = time.NewTimer(time.Duration(pollSeconds) * time.Second)
 		}
 	}
 }
