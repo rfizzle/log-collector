@@ -1,3 +1,12 @@
+## [0.6.4](https://github.com/rfizzle/log-collector/compare/v0.6.3...v0.6.4) (2021-02-24)
+
+
+### Bug Fixes
+
+* fixed cpu usage bug with default switch in infinite loop ([1f433d3](https://github.com/rfizzle/log-collector/commit/1f433d3ed7a167bb10edc2f041c1fa7fe375d4b3))
+
+
+
 ## [0.6.3](https://github.com/rfizzle/log-collector/compare/v0.6.2...v0.6.3) (2021-02-17)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * added pubsub client and support upload of existing data ([692c290](https://github.com/rfizzle/log-collector/commit/692c2906a75fca85aaf0bfdcfe15b3157a0f0349))
-
-
-
-# [0.5.0](https://github.com/rfizzle/log-collector/compare/v0.4.2...v0.5.0) (2021-02-10)
-
-
-### Features
-
-* added zendesk client ([07bfeaf](https://github.com/rfizzle/log-collector/commit/07bfeafb097e2ad864f0c2f27ba6624877f21a8b))
 
 
 
