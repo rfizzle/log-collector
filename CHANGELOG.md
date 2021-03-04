@@ -1,3 +1,12 @@
+## [0.6.5](https://github.com/rfizzle/log-collector/compare/v0.6.4...v0.6.5) (2021-03-04)
+
+
+### Bug Fixes
+
+* added a fix to support json syslog messages with date and hostname prepended to message (specifically for logstash syslog output plugin) ([772b3bd](https://github.com/rfizzle/log-collector/commit/772b3bd3a1880a5cfe5b00b32e10fa3fd9943aba))
+
+
+
 ## [0.6.4](https://github.com/rfizzle/log-collector/compare/v0.6.3...v0.6.4) (2021-02-24)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * increased max messages and added atomic ints ([a29c354](https://github.com/rfizzle/log-collector/commit/a29c354df47114226cc223c6dc09a38551b7ed67))
-
-
-
-# [0.6.0](https://github.com/rfizzle/log-collector/compare/v0.5.0...v0.6.0) (2021-02-17)
-
-
-### Features
-
-* added pubsub client and support upload of existing data ([692c290](https://github.com/rfizzle/log-collector/commit/692c2906a75fca85aaf0bfdcfe15b3157a0f0349))
 
 
 
