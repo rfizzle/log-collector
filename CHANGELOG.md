@@ -1,3 +1,12 @@
+## [0.6.6](https://github.com/rfizzle/log-collector/compare/v0.6.5...v0.6.6) (2021-03-05)
+
+
+### Bug Fixes
+
+* fixed logic not resetting timer for next poll ([bb9a7dc](https://github.com/rfizzle/log-collector/commit/bb9a7dcf3b749d56f9687c5a740a2c56481e3170))
+
+
+
 ## [0.6.5](https://github.com/rfizzle/log-collector/compare/v0.6.4...v0.6.5) (2021-03-04)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * fixed timer issue with output when streaming constant data ([5d8d187](https://github.com/rfizzle/log-collector/commit/5d8d187d14b25e5592609b6a1bb211895ec1898a))
-
-
-
-## [0.6.1](https://github.com/rfizzle/log-collector/compare/v0.6.0...v0.6.1) (2021-02-17)
-
-
-### Bug Fixes
-
-* increased max messages and added atomic ints ([a29c354](https://github.com/rfizzle/log-collector/commit/a29c354df47114226cc223c6dc09a38551b7ed67))
 
 
 
