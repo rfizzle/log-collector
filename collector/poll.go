@@ -33,6 +33,8 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 
 			// Handle error
 			if err != nil {
+				// Resume poll
+				t = time.NewTimer(time.Duration(pollSeconds) * time.Second)
 				continue
 			}
 
@@ -44,7 +46,8 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 			// Handle error
 			if err != nil {
 				log.Errorf("error getting events: %v", err)
-				// Retry the request
+				// Resume poll
+				t = time.NewTimer(time.Duration(pollSeconds) * time.Second)
 				continue
 			}
 
@@ -66,6 +69,8 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 				// Handle error
 				if err != nil {
 					log.Errorf("unable to rotate file: %v", err)
+					// Resume poll
+					t = time.NewTimer(time.Duration(pollSeconds) * time.Second)
 					continue
 				}
 
@@ -73,6 +78,8 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 				sourceFileStat, err := os.Stat(i.tmpWriter.PreviousFile().Name())
 				if err != nil {
 					log.Errorf("error reading last file path: %v", err)
+					// Resume poll
+					t = time.NewTimer(time.Duration(pollSeconds) * time.Second)
 					continue
 				}
 
@@ -80,6 +87,8 @@ func (i *Collector) Poll(pollSeconds int, pollOffset int, resultsChannel chan<- 
 				if sourceFileStat.Size() == 0 {
 					log.Errorf("tmp file is 0 bytes with events")
 					_ = i.tmpWriter.DeletePreviousFile()
+					// Resume poll
+					t = time.NewTimer(time.Duration(pollSeconds) * time.Second)
 					continue
 				}
 
