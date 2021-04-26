@@ -1,3 +1,12 @@
+# [0.7.0](https://github.com/rfizzle/log-collector/compare/v0.6.6...v0.7.0) (2021-04-26)
+
+
+### Features
+
+* added file input client ([91ac5da](https://github.com/rfizzle/log-collector/commit/91ac5da9cc13dc1b10cd07e4539add837f1ec072))
+
+
+
 ## [0.6.6](https://github.com/rfizzle/log-collector/compare/v0.6.5...v0.6.6) (2021-03-05)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * hacky fix for empty key values in syslog ([156048e](https://github.com/rfizzle/log-collector/commit/156048e0dc1ed964cfbef52ec16c19a0b15a37cf))
-
-
-
-## [0.6.2](https://github.com/rfizzle/log-collector/compare/v0.6.1...v0.6.2) (2021-02-17)
-
-
-### Bug Fixes
-
-* fixed timer issue with output when streaming constant data ([5d8d187](https://github.com/rfizzle/log-collector/commit/5d8d187d14b25e5592609b6a1bb211895ec1898a))
 
 
 
