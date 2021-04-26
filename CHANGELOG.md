@@ -1,3 +1,12 @@
+## [0.7.1](https://github.com/rfizzle/log-collector/compare/v0.7.0...v0.7.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* handle empty lines in file input ([c9b9d05](https://github.com/rfizzle/log-collector/commit/c9b9d059bea4d71009efdd7dd827da42516a41ad))
+
+
+
 # [0.7.0](https://github.com/rfizzle/log-collector/compare/v0.6.6...v0.7.0) (2021-04-26)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * fixed cpu usage bug with default switch in infinite loop ([1f433d3](https://github.com/rfizzle/log-collector/commit/1f433d3ed7a167bb10edc2f041c1fa7fe375d4b3))
-
-
-
-## [0.6.3](https://github.com/rfizzle/log-collector/compare/v0.6.2...v0.6.3) (2021-02-17)
-
-
-### Bug Fixes
-
-* hacky fix for empty key values in syslog ([156048e](https://github.com/rfizzle/log-collector/commit/156048e0dc1ed964cfbef52ec16c19a0b15a37cf))
 
 
 
