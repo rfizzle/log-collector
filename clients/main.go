@@ -3,6 +3,7 @@ package clients
 import (
 	"errors"
 	akamaiClient "github.com/rfizzle/log-collector/clients/akamai"
+	fileClient "github.com/rfizzle/log-collector/clients/file"
 	gsuiteClient "github.com/rfizzle/log-collector/clients/gsuite"
 	msGraph "github.com/rfizzle/log-collector/clients/microsoft"
 	oktaClient "github.com/rfizzle/log-collector/clients/okta"
@@ -48,6 +49,8 @@ func InitClientParams() {
 	flag.String("pubsub-input-project", "", "pubsub project ID for input")
 	flag.String("pubsub-input-subscription-id", "", "pubsub subscription ID for input")
 	flag.String("pubsub-input-credentials", "", "pubsub credentials file for input")
+	flag.String("input-file-path", "", "pattern/glob of files to read (json newline log files)")
+	flag.Bool("input-file-delete", false, "delete file after successful read")
 }
 
 func InitializeClient() (collector.Client, error) {
@@ -72,6 +75,8 @@ func InitializeClient() (collector.Client, error) {
 		return zendeskClient.New(options)
 	case "pubsub":
 		return pubsubClient.New(options)
+	case "file":
+		return fileClient.New(options)
 	}
 	return nil, errors.New("invalid input")
 }
@@ -200,6 +205,13 @@ func validateClientParams() (map[string]interface{}, error) {
 		clientOptions["projectID"] = viper.GetString("pubsub-input-project")
 		clientOptions["subscriptionID"] = viper.GetString("pubsub-input-subscription-id")
 		clientOptions["credentials"] = viper.GetString("pubsub-input-credentials")
+	case "file":
+		if viper.GetString("input-file-path") == "" {
+			return nil, errors.New("invalid input file path param (--input-file-path)")
+		}
+
+		clientOptions["path"] = viper.GetString("input-file-path")
+		clientOptions["delete"] = viper.GetBool("input-file-delete")
 	}
 
 	return clientOptions, nil
