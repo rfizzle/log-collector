@@ -21,8 +21,11 @@ func (fileClient *Client) read(filepath string, resultsChannel chan<- string) (i
 		if err != nil && err != io.EOF {
 			return count, err
 		}
-		count++
-		resultsChannel <- strings.TrimSpace(line)
+		trimmedLine := strings.TrimSpace(line)
+		if trimmedLine != "" {
+			count++
+			resultsChannel <- trimmedLine
+		}
 		if err == io.EOF {
 			break
 		}
