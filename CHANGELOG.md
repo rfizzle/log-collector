@@ -1,3 +1,12 @@
+## [0.7.2](https://github.com/rfizzle/log-collector/compare/v0.7.1...v0.7.2) (2021-05-05)
+
+
+### Bug Fixes
+
+* update current time during file poll ([e1a8640](https://github.com/rfizzle/log-collector/commit/e1a86409906aa33d08c37170b224167cc357df52))
+
+
+
 ## [0.7.1](https://github.com/rfizzle/log-collector/compare/v0.7.0...v0.7.1) (2021-04-26)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * added a fix to support json syslog messages with date and hostname prepended to message (specifically for logstash syslog output plugin) ([772b3bd](https://github.com/rfizzle/log-collector/commit/772b3bd3a1880a5cfe5b00b32e10fa3fd9943aba))
-
-
-
-## [0.6.4](https://github.com/rfizzle/log-collector/compare/v0.6.3...v0.6.4) (2021-02-24)
-
-
-### Bug Fixes
-
-* fixed cpu usage bug with default switch in infinite loop ([1f433d3](https://github.com/rfizzle/log-collector/commit/1f433d3ed7a167bb10edc2f041c1fa7fe375d4b3))
 
 
 
