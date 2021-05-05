@@ -21,6 +21,7 @@ func New(options map[string]interface{}) (collector.Client, error) {
 }
 
 func (fileClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string, pollOffset int) (count int, currentTimestamp time.Time, err error) {
+	currentTime := time.Now()
 	count = 0
 	path, ok := fileClient.Options["path"].(string)
 	if !ok {
@@ -47,7 +48,7 @@ func (fileClient *Client) Poll(timestamp time.Time, resultsChannel chan<- string
 		}
 	}
 
-	return count, timestamp, nil
+	return count, currentTime, nil
 }
 
 func (fileClient *Client) Stream(streamChannel chan<- string) (cancelFunc func(), err error) {
