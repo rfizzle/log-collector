@@ -10,7 +10,9 @@ require (
 	github.com/aws/aws-sdk-go v1.35.2
 	github.com/dlclark/regexp2 v1.4.0
 	github.com/dustin/go-humanize v1.0.0
+	github.com/elastic/go-elasticsearch/v6 v6.8.10
 	github.com/elastic/go-elasticsearch/v7 v7.9.0
+	github.com/elastic/go-elasticsearch/v8 v8.0.0-20210429082631-bdab472a9cc7
 	github.com/go-resty/resty/v2 v2.3.0
 	github.com/jjeffery/kv v0.8.1
 	github.com/sirupsen/logrus v1.7.0

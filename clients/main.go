@@ -1,8 +1,10 @@
 package clients
 
 import (
+	"encoding/json"
 	"errors"
 	akamaiClient "github.com/rfizzle/log-collector/clients/akamai"
+	elasticSearchClient "github.com/rfizzle/log-collector/clients/elasticsearch"
 	fileClient "github.com/rfizzle/log-collector/clients/file"
 	gsuiteClient "github.com/rfizzle/log-collector/clients/gsuite"
 	msGraph "github.com/rfizzle/log-collector/clients/microsoft"
@@ -14,6 +16,7 @@ import (
 	"github.com/rfizzle/log-collector/collector"
 	flag "github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"io/ioutil"
 	"net"
 	"os"
 )
@@ -51,6 +54,11 @@ func InitClientParams() {
 	flag.String("pubsub-input-credentials", "", "pubsub credentials file for input")
 	flag.String("input-file-path", "", "pattern/glob of files to read (json newline log files)")
 	flag.Bool("input-file-delete", false, "delete file after successful read")
+	flag.StringSlice("input-es-addresses", []string{}, "addresses to elastic hosts")
+	flag.String("input-es-ca-cert", "", "path to ca cert for elastic client")
+	flag.String("input-es-query", "", "path to query for elasticsearch")
+	flag.String("input-es-index", "", "index to query on elasticsearch")
+	flag.String("input-es-version", "", "version of elasticsearch")
 }
 
 func InitializeClient() (collector.Client, error) {
@@ -77,6 +85,8 @@ func InitializeClient() (collector.Client, error) {
 		return pubsubClient.New(options)
 	case "file":
 		return fileClient.New(options)
+	case "elasticsearch":
+		return elasticSearchClient.New(options)
 	}
 	return nil, errors.New("invalid input")
 }
@@ -212,6 +222,38 @@ func validateClientParams() (map[string]interface{}, error) {
 
 		clientOptions["path"] = viper.GetString("input-file-path")
 		clientOptions["delete"] = viper.GetBool("input-file-delete")
+	case "elasticsearch":
+		if len(viper.GetStringSlice("input-es-addresses")) == 0 {
+			return nil, errors.New("cannot have empty list of elasticsearch addresses (--input-es-addresses)")
+		}
+		if viper.GetString("input-es-index") == "" {
+			return nil, errors.New("invalid input elasticsearch index param (--input-es-index)")
+		}
+		if viper.GetString("input-es-version") == "" {
+			return nil, errors.New("invalid input elasticsearch version param (--input-es-version)")
+		}
+		if viper.GetString("input-es-query") == "" {
+			return nil, errors.New("invalid input elasticsearch index param (--input-es-query)")
+		}
+		if !fileExists(viper.GetString("input-es-query")) {
+			return nil, errors.New("invalid path to elasticsearch query file (--input-es-query)")
+		}
+		if val, err := ioutil.ReadFile(viper.GetString("input-es-query")); err != nil {
+			return nil, errors.New("unable to read elasticsearch query file (--input-es-query)")
+		} else {
+			if _, err := json.Marshal(val); err != nil {
+				return nil, errors.New("invalid json in elasticsearch query file (--input-es-query)")
+			}
+		}
+		if viper.GetString("input-es-ca-cert") != "" && !fileExists(viper.GetString("input-es-ca-cert")) {
+			return nil, errors.New("invalid path to elasticsearch ca cert file (--input-es-ca-cert)")
+		}
+
+		clientOptions["version"] = viper.GetString("input-es-version")
+		clientOptions["index"] = viper.GetString("input-es-index")
+		clientOptions["query-file"] = viper.GetString("input-es-query")
+		clientOptions["ca-cert"] = viper.GetString("input-es-ca-cert")
+		clientOptions["addresses"] = viper.GetStringSlice("input-es-addresses")
 	}
 
 	return clientOptions, nil
