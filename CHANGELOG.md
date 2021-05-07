@@ -1,3 +1,17 @@
+# [0.8.0](https://github.com/rfizzle/log-collector/compare/v0.7.2...v0.8.0) (2021-05-07)
+
+
+### Bug Fixes
+
+* added missing files from previous commit for elasticsearch input ([ca6bf31](https://github.com/rfizzle/log-collector/commit/ca6bf31df08cc7b9bbe9c067854adc660ea62857))
+
+
+### Features
+
+* added elasticsearch 6, 7, and 8 input clients ([109e041](https://github.com/rfizzle/log-collector/commit/109e041deb06f5ab33c9536fe82df5c8886c0b75))
+
+
+
 ## [0.7.2](https://github.com/rfizzle/log-collector/compare/v0.7.1...v0.7.2) (2021-05-05)
 
 
@@ -31,15 +45,6 @@
 ### Bug Fixes
 
 * fixed logic not resetting timer for next poll ([bb9a7dc](https://github.com/rfizzle/log-collector/commit/bb9a7dcf3b749d56f9687c5a740a2c56481e3170))
-
-
-
-## [0.6.5](https://github.com/rfizzle/log-collector/compare/v0.6.4...v0.6.5) (2021-03-04)
-
-
-### Bug Fixes
-
-* added a fix to support json syslog messages with date and hostname prepended to message (specifically for logstash syslog output plugin) ([772b3bd](https://github.com/rfizzle/log-collector/commit/772b3bd3a1880a5cfe5b00b32e10fa3fd9943aba))
 
 
 
