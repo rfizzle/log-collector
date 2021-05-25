@@ -1,3 +1,12 @@
+# [0.9.0](https://github.com/rfizzle/log-collector/compare/v0.8.0...v0.9.0) (2021-05-25)
+
+
+### Features
+
+* added log analytics output ([27021af](https://github.com/rfizzle/log-collector/commit/27021af2eb762a5d0f99c88ed1863eaab028c078))
+
+
+
 # [0.8.0](https://github.com/rfizzle/log-collector/compare/v0.7.2...v0.8.0) (2021-05-07)
 
 
@@ -36,15 +45,6 @@
 ### Features
 
 * added file input client ([91ac5da](https://github.com/rfizzle/log-collector/commit/91ac5da9cc13dc1b10cd07e4539add837f1ec072))
-
-
-
-## [0.6.6](https://github.com/rfizzle/log-collector/compare/v0.6.5...v0.6.6) (2021-03-05)
-
-
-### Bug Fixes
-
-* fixed logic not resetting timer for next poll ([bb9a7dc](https://github.com/rfizzle/log-collector/commit/bb9a7dcf3b749d56f9687c5a740a2c56481e3170))
 
 
 
