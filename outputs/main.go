@@ -14,6 +14,7 @@ func InitCLIParams() {
 	stackdriverInitParams()
 	httpInitParams()
 	elasticInitParams()
+	logAnalyticsInitParams()
 	fileInitParams()
 }
 
@@ -39,6 +40,10 @@ func ValidateCLIParams() error {
 	}
 
 	if err := elasticValidateParams(); err != nil {
+		return err
+	}
+
+	if err := logAnalyticsValidateParams(); err != nil {
 		return err
 	}
 
@@ -116,6 +121,12 @@ func WriteToOutputs(src, timestamp string) error {
 		}
 		if err := elasticSearchWrite(esClient, viper.GetString("elastic-index"), src); err != nil {
 			log.Fatalf("Unable to write to ElasticSearch: %v", err)
+		}
+	}
+
+	if viper.GetBool("log-analytics") {
+		if err := logAnalyticsWrite(src, viper.GetString("log-analytics-log-name"), viper.GetString("log-analytics-customer-id"), viper.GetString("log-analytics-key")); err != nil {
+			log.Fatalf("Unable to write to Log Analytics: %v", err)
 		}
 	}
 
