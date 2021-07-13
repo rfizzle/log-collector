@@ -1,3 +1,12 @@
+# [0.10.0](https://github.com/rfizzle/log-collector/compare/v0.9.0...v0.10.0) (2021-07-13)
+
+
+### Features
+
+* updated zendesk input to use cursor based pagination instead of offset ([209471b](https://github.com/rfizzle/log-collector/commit/209471b48900f24587869129f114d26614e5becb))
+
+
+
 # [0.9.0](https://github.com/rfizzle/log-collector/compare/v0.8.0...v0.9.0) (2021-05-25)
 
 
@@ -36,15 +45,6 @@
 ### Bug Fixes
 
 * handle empty lines in file input ([c9b9d05](https://github.com/rfizzle/log-collector/commit/c9b9d059bea4d71009efdd7dd827da42516a41ad))
-
-
-
-# [0.7.0](https://github.com/rfizzle/log-collector/compare/v0.6.6...v0.7.0) (2021-04-26)
-
-
-### Features
-
-* added file input client ([91ac5da](https://github.com/rfizzle/log-collector/commit/91ac5da9cc13dc1b10cd07e4539add837f1ec072))
 
 
 
