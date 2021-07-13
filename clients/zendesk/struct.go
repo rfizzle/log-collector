@@ -15,7 +15,13 @@ type Client struct {
 
 type AuditResponse struct {
 	AuditLogs    []json.RawMessage `json:"audit_logs"`
-	NextPage     string            `json:"next_page"`
-	PreviousPage string            `json:"previous_page"`
-	Count        int               `json:"count"`
+  Meta      struct {
+    HasMore      bool   `json:"has_more"`
+    AfterCursor  string `json:"after_cursor"`
+    BeforeCursor string `json:"before_cursor"`
+  } `json:"meta"`
+  Links struct {
+    Prev string `json:"prev"`
+    Next string `json:"next"`
+  } `json:"links"`
 }

@@ -1,26 +1,31 @@
 package zendesk
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/tidwall/pretty"
-	"net/url"
-	"strconv"
+  "encoding/json"
+  "fmt"
+  log "github.com/sirupsen/logrus"
+  "github.com/tidwall/pretty"
+  "net/url"
 )
 
 func (zendeskClient *Client) auditLogs(startTime, endTime string, resultsChannel chan<- string) (int, error) {
 	count := 0
 	page := 0
 	hasNext := true
+	after := ""
 
 	for hasNext {
 		// Increment page
 		page += 1
 
 		params := url.Values{}
+		params.Set("page[size]", "100")
 		params.Add("filter[created_at][]", startTime)
 		params.Add("filter[created_at][]", endTime)
-		params.Set("page", strconv.Itoa(page))
+		if after != "" {
+		  log.Info("after: %s", after)
+		  params.Set("page[after]", after)
+    }
 
 		// Set URL
 		scanUrl := fmt.Sprintf("https://%s/api/v2/audit_logs.json", zendeskClient.Domain)
@@ -46,7 +51,8 @@ func (zendeskClient *Client) auditLogs(startTime, endTime string, resultsChannel
 			resultsChannel <- string(pretty.Ugly(event))
 		}
 
-		hasNext = auditResponse.NextPage != ""
+		hasNext = auditResponse.Meta.HasMore
+    after = auditResponse.Meta.AfterCursor
 	}
 
 	return count, nil
