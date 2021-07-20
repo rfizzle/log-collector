@@ -1,3 +1,12 @@
+# [0.11.0](https://github.com/rfizzle/log-collector/compare/v0.10.0...v0.11.0) (2021-07-20)
+
+
+### Features
+
+* updated log analytics output to use JSON instead of RAW ([37294ab](https://github.com/rfizzle/log-collector/commit/37294ab0001cc7672eb1f4a57221704a9ebbc60a))
+
+
+
 # [0.10.0](https://github.com/rfizzle/log-collector/compare/v0.9.0...v0.10.0) (2021-07-13)
 
 
@@ -36,15 +45,6 @@
 ### Bug Fixes
 
 * update current time during file poll ([e1a8640](https://github.com/rfizzle/log-collector/commit/e1a86409906aa33d08c37170b224167cc357df52))
-
-
-
-## [0.7.1](https://github.com/rfizzle/log-collector/compare/v0.7.0...v0.7.1) (2021-04-26)
-
-
-### Bug Fixes
-
-* handle empty lines in file input ([c9b9d05](https://github.com/rfizzle/log-collector/commit/c9b9d059bea4d71009efdd7dd827da42516a41ad))
 
 
 
