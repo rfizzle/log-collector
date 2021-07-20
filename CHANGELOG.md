@@ -1,3 +1,12 @@
+## [0.11.1](https://github.com/rfizzle/log-collector/compare/v0.11.0...v0.11.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* updated pubsub module version ([62f4a1d](https://github.com/rfizzle/log-collector/commit/62f4a1d5905cd42a3b8f37d9e60f4682a81f8863))
+
+
+
 # [0.11.0](https://github.com/rfizzle/log-collector/compare/v0.10.0...v0.11.0) (2021-07-20)
 
 
@@ -36,15 +45,6 @@
 ### Features
 
 * added elasticsearch 6, 7, and 8 input clients ([109e041](https://github.com/rfizzle/log-collector/commit/109e041deb06f5ab33c9536fe82df5c8886c0b75))
-
-
-
-## [0.7.2](https://github.com/rfizzle/log-collector/compare/v0.7.1...v0.7.2) (2021-05-05)
-
-
-### Bug Fixes
-
-* update current time during file poll ([e1a8640](https://github.com/rfizzle/log-collector/commit/e1a86409906aa33d08c37170b224167cc357df52))
 
 
 
