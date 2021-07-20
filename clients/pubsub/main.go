@@ -5,7 +5,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/rfizzle/log-collector/collector"
-	"github.com/tidwall/pretty"
+  log "github.com/sirupsen/logrus"
+  "github.com/tidwall/pretty"
 	"google.golang.org/api/option"
 	"time"
 )
@@ -46,11 +47,15 @@ func (pubsubClient *Client) Stream(streamChannel chan<- string) (cancelFunc func
 	cctx, cancel := context.WithCancel(ctx)
 
 	go func() {
-		err = sub.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
+		err2 := sub.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
 			streamChannel <- string(pretty.Ugly(msg.Data))
 			msg.Ack()
 			received++
 		})
+
+		if err2 != nil {
+		  log.Errorf("error receiving subscription messages: %v", err)
+    }
 	}()
 
 	return cancel, nil
