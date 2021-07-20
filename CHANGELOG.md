@@ -1,3 +1,12 @@
+## [0.11.2](https://github.com/rfizzle/log-collector/compare/v0.11.1...v0.11.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* added error logging in pubsub receive go func ([4bdc463](https://github.com/rfizzle/log-collector/commit/4bdc46313124347b282fbc8c1f8a5077f9e33cbb))
+
+
+
 ## [0.11.1](https://github.com/rfizzle/log-collector/compare/v0.11.0...v0.11.1) (2021-07-20)
 
 
@@ -31,20 +40,6 @@
 ### Features
 
 * added log analytics output ([27021af](https://github.com/rfizzle/log-collector/commit/27021af2eb762a5d0f99c88ed1863eaab028c078))
-
-
-
-# [0.8.0](https://github.com/rfizzle/log-collector/compare/v0.7.2...v0.8.0) (2021-05-07)
-
-
-### Bug Fixes
-
-* added missing files from previous commit for elasticsearch input ([ca6bf31](https://github.com/rfizzle/log-collector/commit/ca6bf31df08cc7b9bbe9c067854adc660ea62857))
-
-
-### Features
-
-* added elasticsearch 6, 7, and 8 input clients ([109e041](https://github.com/rfizzle/log-collector/commit/109e041deb06f5ab33c9536fe82df5c8886c0b75))
 
 
 
