@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	cloud.google.com/go/logging v1.1.0
-	cloud.google.com/go/pubsub v1.8.1
+	cloud.google.com/go/pubsub v1.12.2
 	cloud.google.com/go/storage v1.12.0
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v0.9.18
 	github.com/aws/aws-sdk-go v1.35.2
@@ -20,7 +20,7 @@ require (
 	github.com/spf13/viper v1.7.1
 	github.com/tidwall/pretty v1.0.2
 	github.com/vjeantet/grok v1.0.0
-	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
-	google.golang.org/api v0.32.0
+	golang.org/x/oauth2 v0.0.0-20210628180205-a41e5a781914
+	google.golang.org/api v0.50.0
 	gopkg.in/mcuadros/go-syslog.v2 v2.3.0
 )
