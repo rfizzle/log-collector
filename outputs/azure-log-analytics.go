@@ -19,16 +19,12 @@ import (
 	"time"
 )
 
-type logAnalyticsLog struct {
-	DateValue string `json:"DateValue"`
-	RawData   string `json:"RawData"`
-}
-
 func logAnalyticsInitParams() {
 	flag.Bool("log-analytics", false, "enable azure log analytics output")
 	flag.String("log-analytics-log-name", "", "log analytics log name")
 	flag.String("log-analytics-customer-id", "", "log analytics customer ID for auth")
 	flag.String("log-analytics-key", "", "log analytics key for auth")
+  flag.String("log-analytics-time-field", "", "specify the time field for json logs")
 }
 
 func logAnalyticsValidateParams() error {
@@ -42,13 +38,16 @@ func logAnalyticsValidateParams() error {
 		if viper.GetString("log-analytics-key") == "" {
 			return errors.New("missing log analytics primary or shared key param (--log-analytics-key)")
 		}
+    if viper.GetString("log-analytics-time-field") == "" {
+      return errors.New("time field required for logs to log analytics")
+    }
 	}
 
 	return nil
 }
 
-func logAnalyticsWrite(src, logName, customerID, key string) error {
-	uploadBuffer := make([]logAnalyticsLog, 0)
+func logAnalyticsWrite(src, logName, customerID, key string, timeField string) error {
+	uploadBuffer := make([]interface{}, 0)
 	uploadBufferByteSize := 0
 	lineCount := 0
 	emptyLines := 0
@@ -70,29 +69,32 @@ func logAnalyticsWrite(src, logName, customerID, key string) error {
 		trimmedLine := strings.TrimSpace(line)
 
 		if trimmedLine != "" {
-			// build log event
-			tmpLog := logAnalyticsLog{
-				DateValue: time.Now().Format(time.RFC3339),
-				RawData:   trimmedLine,
-			}
+		  var tmpLog interface{}
+		  var tmpLogBytes []byte
+      var err2 error
 
-			tmpLogBytes, err2 := json.Marshal(tmpLog)
-			if err2 != nil {
-				return err2
-			}
+      err2 = json.Unmarshal([]byte(trimmedLine), &tmpLog)
+      if err2 != nil {
+        return err2
+      }
+
+      tmpLogBytes, err2 = json.Marshal(tmpLog)
+      if err2 != nil {
+        return err2
+      }
 
 			if uploadBufferByteSize+len(tmpLogBytes) >= (25 * 1024 * 1024) {
 				log.Debugf("buffer limit reached, uploading 25MB worth of data (%d log entries)", lineCount)
 				lineCount = 1
 
 				// Do upload
-				err3 := logAnalyticsUpload(uploadBuffer, logName, customerID, key)
+				err3 := logAnalyticsUpload(uploadBuffer, logName, customerID, key, timeField)
 				if err3 != nil {
 					return err3
 				}
 
 				// Clear upload buffer and add new line
-				uploadBuffer = make([]logAnalyticsLog, 0)
+				uploadBuffer = make([]interface{}, 0)
 				uploadBuffer = append(uploadBuffer, tmpLog)
 
 				// Reset upload buffer byte size
@@ -118,7 +120,7 @@ func logAnalyticsWrite(src, logName, customerID, key string) error {
 	// Upload any remaining data
 	if len(uploadBuffer) > 0 {
 		log.Debugf("uploading remaining buffer data (%d log entries)", lineCount)
-		err2 := logAnalyticsUpload(uploadBuffer, logName, customerID, key)
+		err2 := logAnalyticsUpload(uploadBuffer, logName, customerID, key, timeField)
 		if err2 != nil {
 			return err2
 		}
@@ -140,7 +142,7 @@ func logAnalyticsBuildSignature(message, secret string) (string, error) {
 	return base64.StdEncoding.EncodeToString(mac.Sum(nil)), nil
 }
 
-func logAnalyticsUpload(data []logAnalyticsLog, logName, customerID, key string) error {
+func logAnalyticsUpload(data []interface{}, logName, customerID, key, dateField string) error {
 	// Marshal data
 	dataBytes, err := json.Marshal(data)
 	if err != nil {
@@ -165,7 +167,7 @@ func logAnalyticsUpload(data []logAnalyticsLog, logName, customerID, key string)
 	request.SetHeader("Authorization", signature)
 	request.SetHeader("Content-Type", "application/json")
 	request.SetHeader("x-ms-date", dateString)
-	request.SetHeader("time-generated-field", "DateValue")
+	request.SetHeader("time-generated-field", dateField)
 
 	// Set body and post
 	request.SetBody(dataBytes)

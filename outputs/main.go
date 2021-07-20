@@ -125,7 +125,7 @@ func WriteToOutputs(src, timestamp string) error {
 	}
 
 	if viper.GetBool("log-analytics") {
-		if err := logAnalyticsWrite(src, viper.GetString("log-analytics-log-name"), viper.GetString("log-analytics-customer-id"), viper.GetString("log-analytics-key")); err != nil {
+		if err := logAnalyticsWrite(src, viper.GetString("log-analytics-log-name"), viper.GetString("log-analytics-customer-id"), viper.GetString("log-analytics-key"), viper.GetString("log-analytics-time-field")); err != nil {
 			log.Fatalf("Unable to write to Log Analytics: %v", err)
 		}
 	}
