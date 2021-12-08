@@ -1,3 +1,12 @@
+## [0.11.3](https://github.com/rfizzle/log-collector/compare/v0.11.2...v0.11.3) (2021-12-08)
+
+
+### Bug Fixes
+
+* accept 206 reponse from Microsoft as success ([f819479](https://github.com/rfizzle/log-collector/commit/f819479e5336178ecb2280cdb733b11a6b34ef99))
+
+
+
 ## [0.11.2](https://github.com/rfizzle/log-collector/compare/v0.11.1...v0.11.2) (2021-07-20)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * updated zendesk input to use cursor based pagination instead of offset ([209471b](https://github.com/rfizzle/log-collector/commit/209471b48900f24587869129f114d26614e5becb))
-
-
-
-# [0.9.0](https://github.com/rfizzle/log-collector/compare/v0.8.0...v0.9.0) (2021-05-25)
-
-
-### Features
-
-* added log analytics output ([27021af](https://github.com/rfizzle/log-collector/commit/27021af2eb762a5d0f99c88ed1863eaab028c078))
 
 
 
