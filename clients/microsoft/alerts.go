@@ -249,15 +249,16 @@ func (microsoftClient *Client) makeRetryableHttpCall(
 
 		// Return non 200 and non rate limit responses
 		if resp.StatusCode != 200 && resp.StatusCode != rateLimitHttpCode {
+			body, err = ioutil.ReadAll(resp.Body)
+			err = resp.Body.Close()
+
 			// Warn on 206 Partial Content
 			if resp.StatusCode == 206 {
 				log.Warnf("header present - `Warning: %v`", resp.Header.Get("Warning"))
 				log.Warnf("this means that a MS provider returned an error code")
 				log.Warnf("see: https://docs.microsoft.com/en-us/graph/api/resources/security-error-codes?view=graph-rest-1.0")
+				return resp, body, nil
 			}
-
-			body, err = ioutil.ReadAll(resp.Body)
-			err = resp.Body.Close()
 
 			// Setup error if nil
 			if err == nil {
